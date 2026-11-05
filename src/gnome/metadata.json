@@ -1,0 +1,9 @@
+{
+    "uuid": "ponitch@masahhmad",
+    "name": "ponitch",
+    "description": "Interactive notch at the top of the screen (Dynamic Island style): music, volume/brightness HUD, notifications, prayer times, pomodoro, todo and quick controls.",
+    "version": 1,
+    "url": "https://github.com/masahhmad/ponitch",
+    "settings-schema": "org.gnome.shell.extensions.ponitch",
+    "shell-version": ["46"]
+}

@@ -1,0 +1,185 @@
+{
+    "shape": {
+        "type": "combobox",
+        "default": "attached",
+        "description": "Notch shape",
+        "options": {
+            "Attached (joined to the top edge)": "attached",
+            "Floating (pill below the top edge)": "floating"
+        }
+    },
+    "look-color": {
+        "type": "colorchooser",
+        "default": "rgb(0,0,0)",
+        "description": "Notch colour",
+        "tooltip": "Black matches a real notch. Text stays white, so keep the colour dark."
+    },
+    "look-opacity": {
+        "type": "spinbutton",
+        "default": 100,
+        "min": 30,
+        "max": 100,
+        "step": 5,
+        "units": "%",
+        "description": "Opacity (below 100% gives a glass look)"
+    },
+    "hover-opens-panel": {
+        "type": "switch",
+        "default": false,
+        "description": "Open the panel on hover",
+        "tooltip": "Off: hovering only peeks, clicking opens the panel."
+    },
+    "close-delay": {
+        "type": "spinbutton",
+        "default": 300,
+        "min": 0,
+        "max": 2000,
+        "step": 50,
+        "units": "ms",
+        "description": "Delay before closing when the pointer leaves"
+    },
+    "panel-width": {
+        "type": "spinbutton",
+        "default": 620,
+        "min": 480,
+        "max": 900,
+        "step": 10,
+        "units": "px",
+        "description": "Open panel width"
+    },
+    "hud-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Show volume and brightness in the notch",
+        "tooltip": "Replaces the desktop's on-screen display. Off: the desktop's own OSD is used."
+    },
+    "music-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Show music from media players (MPRIS)"
+    },
+    "music-animate-eq": {
+        "type": "switch",
+        "default": false,
+        "description": "Animate the equalizer while music plays",
+        "dependency": "music-enabled",
+        "tooltip": "Costs about 3% of one CPU core while music plays (measured on Cinnamon/X11)."
+    },
+    "control-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Control tab (Wi-Fi, Bluetooth, volume, brightness, power)"
+    },
+    "prayer-header": {
+        "type": "header",
+        "description": "Prayer times"
+    },
+    "prayer-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Show prayer times"
+    },
+    "prayer-city": {
+        "type": "entry",
+        "default": "Surabaya",
+        "description": "City in Indonesia (official Kemenag schedule)",
+        "tooltip": "Leave empty outside Indonesia: times are then calculated offline from the coordinates and method below.",
+        "dependency": "prayer-enabled"
+    },
+    "prayer-lat": {
+        "type": "spinbutton",
+        "default": -7.2575,
+        "min": -90,
+        "max": 90,
+        "step": 0.0001,
+        "digits": 4,
+        "units": "°",
+        "description": "Latitude (offline calculation)",
+        "dependency": "prayer-enabled"
+    },
+    "prayer-lon": {
+        "type": "spinbutton",
+        "default": 112.7521,
+        "min": -180,
+        "max": 180,
+        "step": 0.0001,
+        "digits": 4,
+        "units": "°",
+        "description": "Longitude (offline calculation)",
+        "dependency": "prayer-enabled"
+    },
+    "prayer-method": {
+        "type": "combobox",
+        "default": "kemenag",
+        "description": "Calculation method",
+        "options": {
+            "Kemenag RI (Indonesia)": "kemenag",
+            "Muslim World League": "mwl",
+            "ISNA (North America)": "isna",
+            "Egyptian General Authority": "egypt",
+            "Umm al-Qura (Makkah)": "umm-al-qura",
+            "Karachi": "karachi",
+            "JAKIM (Malaysia)": "jakim",
+            "MUIS (Singapore)": "muis"
+        },
+        "dependency": "prayer-enabled"
+    },
+    "prayer-asr": {
+        "type": "combobox",
+        "default": "shafii",
+        "description": "Asr",
+        "options": {
+            "Shafi'i, Maliki, Hanbali": "shafii",
+            "Hanafi": "hanafi"
+        },
+        "dependency": "prayer-enabled"
+    },
+    "prayer-adzan-file": {
+        "type": "filechooser",
+        "default": "",
+        "description": "Adhan sound (optional)",
+        "select-dir": false,
+        "dependency": "prayer-enabled"
+    },
+    "pomodoro-header": {
+        "type": "header",
+        "description": "Pomodoro"
+    },
+    "pomodoro-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Pomodoro timer",
+        "tooltip": "Durations and the long-break interval are set in the Pomodoro tab."
+    },
+    "todo-header": {
+        "type": "header",
+        "description": "Todo"
+    },
+    "todo-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Todo list"
+    },
+    "notifications-header": {
+        "type": "header",
+        "description": "Notifications"
+    },
+    "notifications-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Show notifications in the notch",
+        "tooltip": "Replaces the desktop's notification banner. The notifications applet still keeps them."
+    },
+    "notifications-history": {
+        "type": "switch",
+        "default": true,
+        "description": "Keep a local history (last 500)",
+        "tooltip": "Stored in ~/.local/share/ponitch/notifications.json, readable only by you. Notifications can contain private text such as messages or login codes.",
+        "dependency": "notifications-enabled"
+    },
+    "toggle-key": {
+        "type": "keybinding",
+        "default": "<Alt>n",
+        "description": "Open/close shortcut"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "uuid": "ponitch@masahhmad",
+    "name": "ponitch",
+    "description": "Interactive notch at the top of the screen (Dynamic Island style).",
+    "version": "0.1.0",
+    "url": "https://github.com/masahhmad/ponitch",
+    "cinnamon-version": ["6.4", "6.6"]
+}

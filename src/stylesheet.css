@@ -1,0 +1,867 @@
+/* Values from notchy.dev, see PLAN.md §4A.6.
+   No box-shadow: St re-blurs it on the CPU for every new size, measured at
+   up to 268 ms per frame while morphing (vs ~5 ms without). */
+.ponitch-body {
+    color: #fff;
+    font-family: Inter, Ubuntu, sans-serif;
+}
+
+.ponitch-body.attached {
+    border: 1px solid rgba(255, 255, 255, 0.035);
+    border-top-width: 0;
+}
+
+/* Body colour/opacity come from the look settings (inline style, notch.js). */
+
+.ponitch-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.ponitch-panel {
+    padding: 10px 12px 12px;
+    spacing: 8px;
+}
+
+.ponitch-panel-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* HUD (PLAN.md §4A.4): icon 28 wide, 172×11 bar, value 44 wide, gap 14, padding 14 */
+.ponitch-hud {
+    padding: 0 14px;
+    spacing: 14px;
+}
+
+.ponitch-hud.toast {
+    padding: 0 8px;
+    spacing: 7px;
+}
+
+.ponitch-hud-icon {
+    icon-size: 19px;
+    width: 28px;
+    color: #fff;
+}
+
+.ponitch-hud.toast .ponitch-hud-icon {
+    icon-size: 14px;
+    width: 18px;
+}
+
+.ponitch-hud-track {
+    height: 11px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.ponitch-hud-fill {
+    height: 11px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.92);
+}
+
+.ponitch-hud-value {
+    width: 44px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: right;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-hud-label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Music (PLAN.md §4.2, §4A.3/§4A.4) */
+.ponitch-music-bar {
+    padding: 0 22px 0 8px;
+    spacing: 10px;
+}
+
+.ponitch-cover {
+    background-color: rgba(255, 255, 255, 0.12);
+    background-size: cover;
+}
+
+.ponitch-cover.small {
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+}
+
+.ponitch-cover.medium {
+    width: 46px;
+    height: 46px;
+    border-radius: 9px;
+}
+
+.ponitch-cover.large {
+    width: 150px;
+    height: 150px;
+    border-radius: 16px;
+}
+
+.ponitch-eq {
+    spacing: 2px;
+    height: 11px;
+}
+
+.ponitch-eq-bar {
+    width: 3px;
+    border-radius: 1px;
+}
+
+.ponitch-music-peek {
+    padding: 8px 14px;
+    spacing: 12px;
+}
+
+.ponitch-music-text {
+    spacing: 2px;
+}
+
+.ponitch-music-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.ponitch-music-title.large {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.ponitch-music-artist {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ponitch-music-artist.large {
+    font-size: 13px;
+}
+
+.ponitch-btn {
+    border-radius: 999px;
+    color: #fff;
+}
+
+.ponitch-btn:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+.ponitch-btn:insensitive {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.ponitch-btn.small {
+    width: 28px;
+    height: 28px;
+}
+
+.ponitch-btn.prominent {
+    width: 38px;
+    height: 38px;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.ponitch-btn.prominent.large {
+    width: 44px;
+    height: 44px;
+}
+
+.ponitch-btn-icon {
+    icon-size: 14px;
+}
+
+.ponitch-music-page {
+    padding: 22px 24px;
+    spacing: 22px;
+}
+
+.ponitch-music-col {
+    spacing: 4px;
+}
+
+.ponitch-chip {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    padding: 3px 9px;
+}
+
+.ponitch-progress {
+    height: 5px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.16);
+    margin-top: 8px;
+}
+
+.ponitch-progress-fill {
+    height: 5px;
+    border-radius: 3px;
+}
+
+.ponitch-time {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    font-feature-settings: "tnum";
+}
+
+.ponitch-controls {
+    spacing: 18px;
+    margin-top: 10px;
+}
+
+.ponitch-cover-halo {
+    padding: 8px;
+    border-radius: 24px;
+}
+
+/* Panel shell (PLAN.md §4A.5) */
+.ponitch-header {
+    spacing: 10px;
+    min-height: 34px;
+}
+
+.ponitch-tabs {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.ponitch-tab {
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.55);
+    min-width: 26px;
+    height: 28px;
+    padding: 0 6px;
+}
+
+.ponitch-tab:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.ponitch-tab:checked {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.15);
+    min-width: 118px;
+}
+
+.ponitch-tab-inner {
+    spacing: 6px;
+}
+
+.ponitch-tab-icon {
+    icon-size: 14px;
+}
+
+.ponitch-tab-label {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-actions {
+    spacing: 4px;
+}
+
+.ponitch-battery {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    height: 30px;
+    padding: 0 10px;
+    spacing: 5px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ponitch-battery-icon {
+    icon-size: 16px;
+}
+
+.ponitch-btn.chrome {
+    width: 30px;
+    height: 30px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ponitch-btn.chrome.large {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.07);
+}
+
+.ponitch-btn:checked {
+    color: #fff;
+    background-color: rgba(255, 159, 10, 0.35);
+}
+
+.ponitch-btn.round {
+    width: 22px;
+    height: 22px;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ponitch-btn.round .ponitch-btn-icon {
+    icon-size: 10px;
+}
+
+.ponitch-muted {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* Home */
+.ponitch-home {
+    spacing: 18px;
+    padding-top: 6px;
+}
+
+.ponitch-section {
+    spacing: 8px;
+}
+
+.ponitch-section-title {
+    spacing: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-section-icon {
+    icon-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ponitch-music-peek.compact {
+    padding: 4px 0;
+}
+
+.ponitch-cal {
+    width: 230px;
+}
+
+.ponitch-cal-head {
+    spacing: 8px;
+}
+
+.ponitch-cal-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ponitch-cal-grid {
+    spacing-rows: 1px;
+}
+
+.ponitch-cal-dow {
+    font-size: 9px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.45);
+    text-align: center;
+    height: 14px;
+}
+
+.ponitch-cal-day {
+    font-size: 10.5px;
+    font-weight: 600;
+    text-align: center;
+    width: 19px;
+    height: 19px;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-cal-day.out {
+    color: rgba(255, 255, 255, 0.22);
+}
+
+.ponitch-cal-day.today {
+    background-color: #0a84ff;
+    border-radius: 10px;
+}
+
+/* Control */
+.ponitch-control {
+    spacing: 8px;
+    padding-top: 6px;
+}
+
+.ponitch-tiles {
+    spacing: 8px;
+}
+
+.ponitch-tile-wrap {
+    spacing: 0;
+}
+
+.ponitch-tile {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 8px 10px;
+    color: #fff;
+}
+
+.ponitch-tile-wrap .ponitch-tile {
+    border-radius: 14px 0 0 14px;
+}
+
+.ponitch-tile:hover {
+    background-color: rgba(255, 255, 255, 0.11);
+}
+
+.ponitch-tile:checked {
+    background-color: rgba(10, 132, 255, 0.85);
+}
+
+.ponitch-btn.tile-more {
+    border-radius: 0 14px 14px 0;
+    width: 22px;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ponitch-btn.tile-more .ponitch-btn-icon {
+    icon-size: 10px;
+}
+
+.ponitch-tile-inner {
+    spacing: 8px;
+}
+
+.ponitch-tile-icon {
+    icon-size: 16px;
+}
+
+.ponitch-tile-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ponitch-tile-sub {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.ponitch-slider-row {
+    spacing: 10px;
+}
+
+.ponitch-slider {
+    height: 22px;
+}
+
+.ponitch-slider-track {
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.ponitch-slider-fill {
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.92);
+}
+
+.ponitch-slider-value {
+    width: 48px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: right;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-control-bottom {
+    spacing: 10px;
+}
+
+.ponitch-segments {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    padding: 3px;
+    spacing: 2px;
+}
+
+.ponitch-seg {
+    border-radius: 999px;
+    height: 32px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.ponitch-seg:checked {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.ponitch-seg-inner {
+    spacing: 6px;
+}
+
+.ponitch-list {
+    spacing: 6px;
+    padding-top: 6px;
+}
+
+.ponitch-list-head {
+    spacing: 8px;
+}
+
+.ponitch-list-title {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.ponitch-list-items {
+    spacing: 2px;
+}
+
+.ponitch-row-btn {
+    border-radius: 10px;
+    padding: 6px 10px;
+    color: #fff;
+}
+
+.ponitch-row-btn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ponitch-row-btn:checked {
+    background-color: rgba(10, 132, 255, 0.35);
+}
+
+.ponitch-row {
+    spacing: 10px;
+}
+
+.ponitch-row-name {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-row-detail {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* M3: Home grid, cards, live activity, prayer, todo */
+.ponitch-home-row {
+    spacing: 18px;
+}
+
+.ponitch-card {
+    width: 150px;
+}
+
+.ponitch-card-btn {
+    border-radius: 12px;
+    color: #fff;
+}
+
+.ponitch-card-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ponitch-card-big {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.ponitch-card-sub {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    font-feature-settings: "tnum";
+}
+
+.ponitch-muted.small {
+    font-size: 10.5px;
+}
+
+.ponitch-upnext-title {
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ponitch-upnext-items {
+    spacing: 6px;
+}
+
+.ponitch-upnext-row {
+    spacing: 8px;
+}
+
+.ponitch-upnext-bar {
+    width: 3px;
+    border-radius: 2px;
+    background-color: #0a84ff;
+}
+
+.ponitch-upnext-row.overdue .ponitch-upnext-bar {
+    background-color: #ff453a;
+}
+
+.ponitch-upnext-name {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ponitch-upnext-when {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ponitch-activity {
+    padding: 0 16px;
+    spacing: 10px;
+}
+
+.ponitch-activity-icon {
+    icon-size: 16px;
+}
+
+.ponitch-activity-text {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-activity-right {
+    font-size: 13px;
+    font-weight: bold;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-prayer {
+    spacing: 10px;
+    padding-top: 8px;
+}
+
+.ponitch-prayer-row {
+    padding: 7px 12px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.ponitch-prayer-row.minor {
+    color: rgba(255, 255, 255, 0.55);
+    background-color: transparent;
+}
+
+.ponitch-prayer-row.next {
+    background-color: rgba(48, 209, 88, 0.3);
+    color: #fff;
+}
+
+.ponitch-prayer-time {
+    font-feature-settings: "tnum";
+}
+
+.ponitch-todo {
+    spacing: 8px;
+    padding-top: 6px;
+}
+
+.ponitch-entry {
+    border-radius: 10px;
+    padding: 7px 12px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    font-size: 12px;
+    caret-color: #fff;
+    selection-background-color: rgba(10, 132, 255, 0.6);
+}
+
+.ponitch-entry:focus {
+    background-color: rgba(255, 255, 255, 0.11);
+}
+
+.ponitch-todo-row {
+    spacing: 8px;
+    padding: 2px 4px;
+}
+
+.ponitch-todo-title {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-todo-row.done .ponitch-todo-title {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* Pomodoro tab */
+.ponitch-pomodoro {
+    spacing: 24px;
+    padding: 8px 8px 0;
+}
+
+.ponitch-pomo-timer {
+    spacing: 4px;
+}
+
+.ponitch-pomo-phase {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ff9f0a;
+}
+
+.ponitch-pomo-big {
+    font-size: 52px;
+    font-weight: bold;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-pomo-settings {
+    spacing: 6px;
+    width: 300px;
+}
+
+.ponitch-stepper {
+    spacing: 6px;
+    padding: 4px 6px 4px 12px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.ponitch-stepper-name {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ponitch-stepper-value {
+    width: 30px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    font-feature-settings: "tnum";
+}
+
+.ponitch-stepper-unit {
+    width: 52px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Pomodoro alert: notch grows to the media-card size when a session runs out */
+.ponitch-alert {
+    padding: 0 20px;
+    spacing: 14px;
+}
+
+.ponitch-alert-icon {
+    icon-size: 30px;
+}
+
+.ponitch-alert-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.ponitch-alert-sub {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    font-feature-settings: "tnum";
+}
+
+.ponitch-alert-hint {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Notifications (PLAN.md §4.8): banner 420×64 like Notchy, and the Notifications tab */
+.ponitch-banner {
+    padding: 0 18px 0 14px;
+    spacing: 12px;
+}
+
+.ponitch-banner-icon {
+    icon-size: 32px;
+}
+
+.ponitch-banner-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.ponitch-banner-body {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ponitch-notifs {
+    spacing: 6px;
+    padding-top: 6px;
+}
+
+.ponitch-notif-items {
+    spacing: 6px;
+}
+
+.ponitch-notif {
+    spacing: 10px;
+    padding: 8px 6px 8px 12px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.ponitch-notif.critical {
+    background-color: rgba(255, 69, 58, 0.18);
+}
+
+.ponitch-notif-icon {
+    icon-size: 28px;
+}
+
+.ponitch-notif-open {
+    color: #fff;
+}
+
+.ponitch-notif-meta {
+    font-size: 10.5px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.ponitch-notif-title {
+    font-size: 12.5px;
+    font-weight: bold;
+}
+
+.ponitch-notif-body {
+    font-size: 11.5px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.ponitch-notif-actions {
+    spacing: 6px;
+    padding-top: 4px;
+}
+
+.ponitch-text-btn {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.ponitch-text-btn:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}

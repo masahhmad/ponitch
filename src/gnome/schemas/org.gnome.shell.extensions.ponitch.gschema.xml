@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Same keys as src/cinnamon/settings-schema.json (checked by tests/test_build.py). -->
+<schemalist>
+  <schema id="org.gnome.shell.extensions.ponitch" path="/org/gnome/shell/extensions/ponitch/">
+    <key name="shape" type="s">
+      <choices>
+        <choice value="attached"/>
+        <choice value="floating"/>
+      </choices>
+      <default>"attached"</default>
+      <summary>Notch shape</summary>
+    </key>
+    <key name="look-color" type="s">
+      <default>"rgb(0,0,0)"</default>
+      <summary>Notch colour</summary>
+    </key>
+    <key name="look-opacity" type="i">
+      <range min="30" max="100"/>
+      <default>100</default>
+      <summary>Opacity (below 100% gives a glass look)</summary>
+    </key>
+    <key name="hover-opens-panel" type="b">
+      <default>false</default>
+      <summary>Open the panel on hover</summary>
+    </key>
+    <key name="close-delay" type="i">
+      <range min="0" max="2000"/>
+      <default>300</default>
+      <summary>Delay before closing when the pointer leaves</summary>
+    </key>
+    <key name="panel-width" type="i">
+      <range min="480" max="900"/>
+      <default>620</default>
+      <summary>Open panel width</summary>
+    </key>
+    <key name="hud-enabled" type="b">
+      <default>true</default>
+      <summary>Show volume and brightness in the notch</summary>
+    </key>
+    <key name="music-enabled" type="b">
+      <default>true</default>
+      <summary>Show music from media players (MPRIS)</summary>
+    </key>
+    <key name="music-animate-eq" type="b">
+      <default>false</default>
+      <summary>Animate the equalizer while music plays</summary>
+    </key>
+    <key name="control-enabled" type="b">
+      <default>true</default>
+      <summary>Control tab (Wi-Fi, Bluetooth, volume, brightness, power)</summary>
+    </key>
+    <key name="prayer-enabled" type="b">
+      <default>true</default>
+      <summary>Show prayer times</summary>
+    </key>
+    <key name="prayer-city" type="s">
+      <default>"Surabaya"</default>
+      <summary>City in Indonesia (official Kemenag schedule)</summary>
+    </key>
+    <key name="prayer-lat" type="d">
+      <range min="-90.0" max="90.0"/>
+      <default>-7.2575</default>
+      <summary>Latitude (offline calculation)</summary>
+    </key>
+    <key name="prayer-lon" type="d">
+      <range min="-180.0" max="180.0"/>
+      <default>112.7521</default>
+      <summary>Longitude (offline calculation)</summary>
+    </key>
+    <key name="prayer-method" type="s">
+      <choices>
+        <choice value="kemenag"/>
+        <choice value="mwl"/>
+        <choice value="isna"/>
+        <choice value="egypt"/>
+        <choice value="umm-al-qura"/>
+        <choice value="karachi"/>
+        <choice value="jakim"/>
+        <choice value="muis"/>
+      </choices>
+      <default>"kemenag"</default>
+      <summary>Calculation method</summary>
+    </key>
+    <key name="prayer-asr" type="s">
+      <choices>
+        <choice value="shafii"/>
+        <choice value="hanafi"/>
+      </choices>
+      <default>"shafii"</default>
+      <summary>Asr</summary>
+    </key>
+    <key name="prayer-adzan-file" type="s">
+      <default>""</default>
+      <summary>Adhan sound (optional)</summary>
+    </key>
+    <key name="pomodoro-enabled" type="b">
+      <default>true</default>
+      <summary>Pomodoro timer</summary>
+    </key>
+    <key name="todo-enabled" type="b">
+      <default>true</default>
+      <summary>Todo list</summary>
+    </key>
+    <key name="notifications-enabled" type="b">
+      <default>true</default>
+      <summary>Show notifications in the notch</summary>
+    </key>
+    <key name="notifications-history" type="b">
+      <default>true</default>
+      <summary>Keep a local history (last 500)</summary>
+    </key>
+    <key name="toggle-key" type="as">
+      <default>['&lt;Alt&gt;n']</default>
+      <summary>Open/close shortcut</summary>
+    </key>
+  </schema>
+</schemalist>
