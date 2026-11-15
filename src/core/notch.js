@@ -2,15 +2,17 @@
 const { Spring } = require('./spring');
 const { parseColor } = require('./color');
 const { initMusicUI, buildBar, buildPeek, buildPage } = require('./music_ui');
-const { initWidgets, ticker } = require('./widgets');
+const { initWidgets, ticker, iconButton, centered } = require('./widgets');
 const { buildPanel } = require('./panel_ui');
 const { buildHome } = require('./home_ui');
 const { buildControl } = require('./control_ui');
 const { buildPrayerTab } = require('./prayer_ui');
 const { buildTodoTab } = require('./todo_ui');
-const { buildPomodoroTab } = require('./pomodoro_ui');
+const { buildPomodoroTab, buildPomodoroFocus, EXPAND_ICON } = require('./pomodoro_ui');
+const { buildStopwatchTab } = require('./stopwatch_ui');
 const { initNotificationsUI, buildBanner, buildNotificationsTab } = require('./notifications_ui');
 const { pickActivity, countdown, POMODORO_ALERTS } = require('./activity');
+const { _ } = require('./i18n');
 
 let Clutter, St, GLib;
 
@@ -27,7 +29,7 @@ const TRACK_FLASH_MS = 4000;
 const BANNER = { w: 420, h: 64, r: 32 };
 const BANNER_MS = 4000;
 const TINTS = { green: '#30D158', orange: '#FF9F0A', red: '#FF453A', yellow: '#FFD60A', teal: '#40C8E0' };
-const ACTIVITY_ICONS = { prayer: 'daytime-sunset-symbolic', timer: 'alarm-symbolic', todo: 'task-due-symbolic' };
+const ACTIVITY_ICONS = { prayer: 'daytime-sunset-symbolic', timer: 'alarm-symbolic', todo: 'task-due-symbolic', stopwatch: 'preferences-system-time-symbolic' };
 const TOAST_H = 30, TOAST_R = 15;
 const HUD_BAR_W = 172;
 const HUD_HIDE_MS = 1500; // same as Cinnamon's own OSD
@@ -81,8 +83,8 @@ var Notch = class Notch {
 
         platform.addChrome(this.actor);
         this._disconnects = [
-            platform.connectMonitorsChanged(() => this._apply()),
-            platform.connectScaleChanged(() => this._apply()),
+            platform.connectMonitorsChanged(() => this._relayout()),
+            platform.connectScaleChanged(() => this._relayout()),
         ];
 
         this.applyConfig();
@@ -100,13 +102,15 @@ var Notch = class Notch {
         }
     }
 
-    // features: { prayer, pomodoro, todo } services (any may be null). They feed the closed
+    // features: { prayer, pomodoro, todo, stopwatch, notifications } services (any may be null). They feed the closed
     // notch's live activity (PLAN.md §5) and the Home/Prayer/Todo panel content.
     setFeatures(features) {
         (this._unsubFeatures || []).forEach(u => u());
         this._features = features;
         if (this.state === 'alert' && !features.pomodoro)
             this.state = 'closed'; // the alert belongs to the pomodoro that was just turned off
+        if (!features.pomodoro)
+            this._removeFocus();
         this._unsubFeatures = Object.values(features).filter(Boolean).map(s => s.subscribe(() => this._refresh()));
         if (features.pomodoro)
             this._unsubFeatures.push(features.pomodoro.subscribe(() => this._checkPomodoroAlert()));
@@ -131,6 +135,7 @@ var Notch = class Notch {
             this._unsubMusic();
         (this._unsubFeatures || []).forEach(u => u());
         Object.keys(this._timers).forEach(k => this._clearTimer(k));
+        this._removeFocus();
         this._timeline.stop();
         this._disconnects.forEach(d => d());
         this._platform.removeChrome(this.actor);
@@ -152,6 +157,50 @@ var Notch = class Notch {
 
     toggle() {
         this.setState(this.state === 'open' ? 'closed' : 'open');
+    }
+
+    // Pomodoro fills the primary monitor; the notch stays above it and, closed, shows the
+    // countdown with a restore button. The same button (or the one in the Pomodoro tab) shrinks it.
+    togglePomodoroExpanded() {
+        const pomo = this._features && this._features.pomodoro;
+        if (this._focus) {
+            this._removeFocus();
+        } else if (pomo) {
+            this._focus = buildPomodoroFocus({ gi: this._platform.gi, pomodoro: pomo });
+            this._platform.addChrome(this._focus.actor);
+            // Both are shell chrome in the same layer; keep the notch on top of the overlay.
+            const parent = this.actor.get_parent();
+            if (parent && parent === this._focus.actor.get_parent())
+                parent.set_child_above_sibling(this.actor, null);
+            this._relayout();
+            this.state = 'closed'; // out of the way of the countdown (pinned or not)
+        }
+        this._shownKind = null;
+        this._refresh();
+    }
+
+    _removeFocus() {
+        if (!this._focus)
+            return;
+        this._platform.removeChrome(this._focus.actor);
+        this._focus.actor.destroy();
+        this._focus = null;
+    }
+
+    _relayout() {
+        this._apply();
+        const mon = this._platform.primaryMonitor();
+        if (this._focus && mon)
+            this._focus.layout(mon, this._platform.uiScale());
+    }
+
+    // Open the panel on tab `id` (unknown ids fall back to the first tab).
+    openTab(id) {
+        this._panelTab = id;
+        if (this.state === 'open' && this._view && this._view.select)
+            this._view.select(id);
+        else
+            this.setState('open');
     }
 
     setPinned(pinned) {
@@ -185,6 +234,8 @@ var Notch = class Notch {
         case 'banner': return `banner:${this._bannerRev}`;
         case 'peek': return this._track ? 'player' : 'dot';
         default:
+            if (this._focus)
+                return 'expanded';
             if (this._activity())
                 return `activity:${this._act.key}`;
             return this._playing() ? 'music' : 'dot';
@@ -199,6 +250,7 @@ var Notch = class Notch {
             prayer: f.prayer && f.prayer.today ? { next: f.prayer.next, current: f.prayer.current } : null,
             pomodoro: f.pomodoro ? f.pomodoro.view : null,
             todo: f.todo ? f.todo.next : null,
+            stopwatch: f.stopwatch ? f.stopwatch.view : null,
         });
         return this._act;
     }
@@ -240,19 +292,22 @@ var Notch = class Notch {
         const control = this._getControl ? this._getControl() : null;
         const f = this._features || {};
         const openTab = id => this._view && this._view.select && this._view.select(id);
-        const tabs = [{ id: 'home', icon: 'go-home-symbolic', label: 'Home', build: () => buildHome({ gi, music: this._music, ...f, openTab }) }];
+        const tabs = [{ id: 'home', icon: 'go-home-symbolic', label: _('Home'), build: () => buildHome({ gi, music: this._music, ...f, openTab }) }];
         if (this._music)
-            tabs.push({ id: 'music', icon: 'audio-x-generic-symbolic', label: 'Music', build: () => buildPage(this._music) });
+            tabs.push({ id: 'music', icon: 'audio-x-generic-symbolic', label: _('Music'), build: () => buildPage(this._music) });
         if (f.prayer)
-            tabs.push({ id: 'prayer', icon: 'daytime-sunset-symbolic', label: 'Prayer', build: () => buildPrayerTab({ gi, prayer: f.prayer }) });
+            tabs.push({ id: 'prayer', icon: 'daytime-sunset-symbolic', label: _('Prayer'), build: () => buildPrayerTab({ gi, prayer: f.prayer }) });
         if (f.todo)
-            tabs.push({ id: 'todo', icon: 'view-list-symbolic', label: 'Todo', build: () => buildTodoTab({ gi, todo: f.todo, platform: this._platform }) });
+            tabs.push({ id: 'todo', icon: 'view-list-symbolic', label: _('Todo'), build: () => buildTodoTab({ gi, todo: f.todo, platform: this._platform }) });
         if (f.pomodoro)
-            tabs.push({ id: 'pomodoro', icon: 'alarm-symbolic', label: 'Pomodoro', build: () => buildPomodoroTab({ gi, pomodoro: f.pomodoro }) });
+            tabs.push({ id: 'pomodoro', icon: 'alarm-symbolic', label: _('Pomodoro'), build: () => buildPomodoroTab({ gi, pomodoro: f.pomodoro,
+                expanded: () => !!this._focus, toggleExpanded: () => this.togglePomodoroExpanded() }) });
+        if (f.stopwatch)
+            tabs.push({ id: 'stopwatch', icon: 'preferences-system-time-symbolic', label: _('Stopwatch'), build: () => buildStopwatchTab({ gi, stopwatch: f.stopwatch }) });
         if (f.notifications)
-            tabs.push({ id: 'notifications', icon: 'preferences-system-notifications-symbolic', label: 'Notifications', build: () => buildNotificationsTab({ gi, notifications: f.notifications }) });
+            tabs.push({ id: 'notifications', icon: 'preferences-system-notifications-symbolic', label: _('Notifications'), build: () => buildNotificationsTab({ gi, notifications: f.notifications }) });
         if (control)
-            tabs.push({ id: 'control', icon: 'emblem-system-symbolic', label: 'Control', build: () => buildControl({ gi, platform: this._platform, ...control }) });
+            tabs.push({ id: 'control', icon: 'emblem-system-symbolic', label: _('Control'), build: () => buildControl({ gi, platform: this._platform, ...control }) });
         return buildPanel({
             gi, tabs, tab: this._panelTab, onTab: id => { this._panelTab = id; },
             power: control && control.power, audio: control && control.audio,
@@ -310,11 +365,11 @@ var Notch = class Notch {
         const box = new St.BoxLayout({ style_class: 'ponitch-alert', x_expand: true, y_expand: true });
         box.add_child(new St.Icon({ icon_name: 'alarm-symbolic', style_class: 'ponitch-alert-icon', style: `color: ${tint};`, y_align: Clutter.ActorAlign.CENTER }));
         const text = new St.BoxLayout({ vertical: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER });
-        text.add_child(new St.Label({ text: info.title, style_class: 'ponitch-alert-title' }));
+        text.add_child(new St.Label({ text: _(info.title), style_class: 'ponitch-alert-title' }));
         const sub = new St.Label({ style_class: 'ponitch-alert-sub' });
         text.add_child(sub);
         box.add_child(text);
-        box.add_child(new St.Label({ text: 'Click to dismiss', style_class: 'ponitch-alert-hint', y_align: Clutter.ActorAlign.CENTER }));
+        box.add_child(new St.Label({ text: _('Click to dismiss'), style_class: 'ponitch-alert-hint', y_align: Clutter.ActorAlign.CENTER }));
         const pomo = this._features.pomodoro;
         ticker(box, 1000, () => {
             const v = pomo.view;
@@ -331,10 +386,31 @@ var Notch = class Notch {
         box.add_child(new St.Label({ text: act.text, style_class: 'ponitch-activity-text', x_expand: true, y_align: Clutter.ActorAlign.CENTER }));
         const right = new St.Label({ style_class: 'ponitch-activity-right', style: `color: ${tint};`, y_align: Clutter.ActorAlign.CENTER });
         box.add_child(right);
-        if (act.until)
+        if (act.since)
+            ticker(box, 1000, () => { right.text = countdown(Date.now(), act.since); });
+        else if (act.until)
             ticker(box, 1000, () => { right.text = countdown(act.until, Date.now()); });
         else
-            right.text = act.label === 'now' ? 'Now' : 'Done';
+            right.text = act.label === 'now' ? _('Now') : _('Done');
+        return { actor: box };
+    }
+
+    // Closed notch while the pomodoro is expanded: phase, countdown and the restore button.
+    _buildExpanded() {
+        const box = new St.BoxLayout({ style_class: 'ponitch-activity', x_expand: true, y_expand: true });
+        const tint = TINTS.orange;
+        box.add_child(new St.Icon({ icon_name: ACTIVITY_ICONS.timer, style_class: 'ponitch-activity-icon', style: `color: ${tint};`, y_align: Clutter.ActorAlign.CENTER }));
+        const label = new St.Label({ style_class: 'ponitch-activity-text', x_expand: true, y_align: Clutter.ActorAlign.CENTER });
+        const right = new St.Label({ style_class: 'ponitch-activity-right', style: `color: ${tint};`, y_align: Clutter.ActorAlign.CENTER });
+        const restore = iconButton(EXPAND_ICON(true), 'small', () => this.togglePomodoroExpanded());
+        restore.accessible_name = _('Exit full screen');
+        [label, right, centered(restore)].forEach(a => box.add_child(a));
+        const pomo = this._features.pomodoro;
+        ticker(box, 1000, () => {
+            const v = pomo.view;
+            label.text = v.label;
+            right.text = countdown(Date.now() + v.remaining, Date.now());
+        });
         return { actor: box };
     }
 
@@ -386,7 +462,7 @@ var Notch = class Notch {
             const w = Math.max(160, Math.min(420, 60 + 7 * (this._hud.label || '').length));
             return { w, h: TOAST_H, r: TOAST_R };
         }
-        default: return this._activity() || this._playing() ? MUSIC : IDLE;
+        default: return this._focus || this._activity() || this._playing() ? MUSIC : IDLE;
         }
     }
 
@@ -490,7 +566,7 @@ var Notch = class Notch {
         if (this.actor.hover) {
             if (this.state === 'tucked')
                 this.setState('closed');
-            else if (this.state === 'closed')
+            else if (this.state === 'closed' && !this._focus) // expanded: keep the restore button in place
                 this._startTimer('enter', HOVER_DELAY, () =>
                     this.setState(this.cfg.hoverOpensPanel ? 'open' : 'peek'));
         } else if (!this._pinned && (this.state === 'peek' || this.state === 'open')) {
@@ -558,6 +634,7 @@ var Notch = class Notch {
         case `banner:${this._bannerRev}`: return buildBanner(this._banner);
         case `alert:${this._alert && this._alert.at}`: return this._buildAlert();
         case 'music': return buildBar({ animateEq: this.cfg.musicAnimateEq });
+        case 'expanded': return this._buildExpanded();
         case `activity:${this._act && this._act.key}`: return this._buildActivity(this._act);
         case 'player': return buildPeek(this._music);
         case 'panel': return this._buildPanel();

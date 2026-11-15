@@ -1,5 +1,6 @@
 // "Up next" on Home and the Todo tab (PLAN.md §4.5).
 const { iconButton, centered, setScrollChild, deferred } = require('./widgets');
+const { _ } = require('./i18n');
 
 let Clutter, St;
 
@@ -11,7 +12,7 @@ const when = due => {
     if (d.toDateString() === today.toDateString())
         return t;
     const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
-    return d.toDateString() === tomorrow.toDateString() ? `Tomorrow ${t}` : `${d.getDate()}/${d.getMonth() + 1} ${t}`;
+    return d.toDateString() === tomorrow.toDateString() ? _('Tomorrow %s', t) : `${d.getDate()}/${d.getMonth() + 1} ${t}`;
 };
 
 // ctx: { gi, todo, openTab }
@@ -19,7 +20,7 @@ function buildUpNext(ctx) {
     ({ Clutter, St } = ctx.gi);
     const box = new St.BoxLayout({ vertical: true, style_class: 'ponitch-section ponitch-upnext', x_expand: true });
     const head = new St.BoxLayout({ style_class: 'ponitch-section-title' });
-    head.add_child(new St.Label({ text: 'UP NEXT', style_class: 'ponitch-upnext-title', x_expand: true, y_align: Clutter.ActorAlign.CENTER }));
+    head.add_child(new St.Label({ text: _('UP NEXT'), style_class: 'ponitch-upnext-title', x_expand: true, y_align: Clutter.ActorAlign.CENTER }));
     head.add_child(centered(iconButton('list-add-symbolic', 'round', () => ctx.openTab('todo'))));
     const items = new St.BoxLayout({ vertical: true, style_class: 'ponitch-upnext-items' });
     box.add_child(head);
@@ -28,7 +29,7 @@ function buildUpNext(ctx) {
         items.destroy_all_children();
         const open = ctx.todo.list.filter(t => !t.done).slice(0, 4);
         if (!open.length)
-            items.add_child(new St.Label({ text: 'Nothing to do', style_class: 'ponitch-muted' }));
+            items.add_child(new St.Label({ text: _('Nothing to do'), style_class: 'ponitch-muted' }));
         for (const t of open) {
             const row = new St.BoxLayout({ style_class: 'ponitch-upnext-row' + (t.due !== null && t.due < Date.now() ? ' overdue' : '') });
             row.add_child(new St.Widget({ style_class: 'ponitch-upnext-bar' }));
@@ -50,7 +51,7 @@ function buildUpNext(ctx) {
 function buildTodoTab(ctx) {
     ({ Clutter, St } = ctx.gi);
     const box = new St.BoxLayout({ vertical: true, style_class: 'ponitch-todo', x_expand: true, y_expand: true });
-    const entry = new St.Entry({ style_class: 'ponitch-entry', hint_text: 'Add a task… e.g. "Send report @15:30" or "besok Rapat"', can_focus: true, x_expand: true });
+    const entry = new St.Entry({ style_class: 'ponitch-entry', hint_text: _('Add a task… e.g. "Send report @15:30" or "tomorrow Meeting"'), can_focus: true, x_expand: true });
     const scroll = new St.ScrollView({ style_class: 'ponitch-list-scroll', x_expand: true, y_expand: true });
     scroll.set_policy(St.PolicyType.NEVER, St.PolicyType.AUTOMATIC);
     const items = new St.BoxLayout({ vertical: true, style_class: 'ponitch-list-items' });
@@ -88,7 +89,7 @@ function buildTodoTab(ctx) {
         items.destroy_all_children();
         const all = ctx.todo.list;
         if (!all.length)
-            items.add_child(new St.Label({ text: 'No tasks yet', style_class: 'ponitch-muted' }));
+            items.add_child(new St.Label({ text: _('No tasks yet'), style_class: 'ponitch-muted' }));
         for (const t of all.slice(0, 50)) {
             const row = new St.BoxLayout({ style_class: 'ponitch-todo-row' + (t.done ? ' done' : '') });
             const check = iconButton(t.done ? 'checkbox-checked-symbolic' : 'checkbox-symbolic', 'small', () => ctx.todo.toggle(t.id));

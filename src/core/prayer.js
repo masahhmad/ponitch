@@ -6,7 +6,9 @@ const { initStore, cachePath, readJson, writeJson, onResume, at } = require('./s
 const { playSound } = require('./sound');
 
 const API = 'https://api.myquran.com/v2/sholat';
-const NAMES = { imsak: 'Imsak', fajr: 'Fajr', sunrise: 'Sunrise', dhuha: 'Dhuha', dhuhr: 'Dhuhr', asr: 'Asr', maghrib: 'Maghrib', isha: 'Isha' };
+const { _, N_ } = require('./i18n');
+
+const NAMES = { imsak: N_('Imsak'), fajr: N_('Fajr'), sunrise: N_('Sunrise'), dhuha: N_('Dhuha'), dhuhr: N_('Dhuhr'), asr: N_('Asr'), maghrib: N_('Maghrib'), isha: N_('Isha') };
 const PRAYERS = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
 const API_KEYS = { imsak: 'imsak', fajr: 'subuh', sunrise: 'terbit', dhuha: 'dhuha', dhuhr: 'dzuhur', asr: 'ashar', maghrib: 'maghrib', isha: 'isya' };
 const SOON_MS = 15 * 60 * 1000, NOW_MS = 5 * 60 * 1000;
@@ -80,7 +82,7 @@ var PrayerService = class PrayerService extends Emitter {
     }
 
     _entry(key) {
-        return { key, name: NAMES[key], at: this._at(key) };
+        return { key, name: _(NAMES[key]), at: this._at(key) };
     }
 
     // All times for display, in order.

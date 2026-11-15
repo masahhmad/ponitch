@@ -1,50 +1,69 @@
 # ponitch
 
-Notch interaktif ala Dynamic Island untuk desktop Linux berbasis **Cinnamon** (Linux Mint) dan **GNOME Shell 46+** (Ubuntu).
-Status: Cinnamon jalan (M0). Dukungan GNOME menyusul (milestone MG). Rencana lengkap: [PLAN.md](PLAN.md).
+An interactive Dynamic Island-style notch for Linux desktops running **Cinnamon** (Linux Mint) and **GNOME Shell 46+** (Ubuntu 24.04).
+Music, a volume/brightness HUD, notifications, prayer times, Pomodoro, a work stopwatch, todo and quick controls, all in a black pill at the top of the screen.
+Full plan (in Indonesian): [PLAN.md](PLAN.md).
 
-Lisensi: GPL-3.0-or-later.
+License: GPL-3.0-or-later.
 
-## Pasang
+## Install
 
 ```sh
-./install.sh   # deteksi desktop, build, symlink extension + ~/.local/bin/notchctl
+./install.sh   # detects the desktop, builds, symlinks the extension + ~/.local/bin/notchctl
 ```
 
-Lalu aktifkan **ponitch** di pengaturan Extensions desktopmu. Notch muncul di monitor primary.
+Then enable **ponitch** in your desktop's Extensions settings. The notch appears on the primary monitor.
 
-## Pakai
+- Cinnamon: move your panel to the bottom first; the notch takes the top centre.
+- GNOME: the notch covers the middle of the top bar and the clock moves to the right. It moves back when ponitch is disabled.
 
-- Hover: mengintip. Klik atau `Alt+N`: buka panel. Pointer keluar: tutup.
-- `notchctl toggle|open|close|tuck|untuck|pin|unpin|state`
+Needs `python3`, `glib-compile-schemas` and `msgfmt` (package `gettext`) to build.
 
-## Struktur
+## Use
 
-- `src/core/`: kode bersama, netral platform (tanpa `imports.*`, `Main`, `global`).
-- `src/cinnamon/`, `src/gnome/`: adapter per desktop.
-- `python3 build.py [cinnamon|gnome|all]` → `dist/<desktop>/ponitch@masahhmad/`. Untuk GNOME, modul core diubah ke ESM.
+- Hover to peek. Click or press `Alt+N` to open the panel. Move the pointer away to close it.
+- `notchctl toggle|open [tab]|close|tuck|untuck|pin|unpin|state`, e.g. `notchctl open pomodoro`.
+  Tabs: `home`, `music`, `prayer`, `todo`, `pomodoro`, `stopwatch`, `notifications`, `control`.
 
-## Tes
+Prayer times: inside Indonesia, set your city to use the official Kemenag schedule (downloaded once a month from api.myquran.com). Elsewhere, leave the city empty and set latitude, longitude and a calculation method; times are then computed offline.
+
+Privacy: no telemetry. Network use is limited to the prayer schedule and `http(s)` cover art that media players announce.
+
+## Translations
+
+The UI is in English with an Indonesian translation. Gettext domain: `ponitch@masahhmad`.
+
+- `python3 build.py pot` regenerates `po/ponitch.pot` from the sources and both settings schemas.
+- Update a translation: `msgmerge --update po/id.po po/ponitch.pot`, then fill in the new strings.
+- New language: `msginit -i po/ponitch.pot -o po/<lang>.po -l <lang>`.
+- Try it without changing your locale (GNOME nested shell): `LANGUAGE=id dbus-run-session -- gnome-shell --nested --wayland`.
+
+`build.py` compiles every `po/*.po` into the extension's `locale/`. On Cinnamon, `install.sh` also links them into `~/.local/share/locale`, where Cinnamon and its settings window look for them.
+
+## Layout
+
+- `src/core/`: shared, platform-neutral code (no `imports.*`, `Main` or `global`).
+- `src/cinnamon/`, `src/gnome/`: one thin adapter per desktop.
+- `python3 build.py [cinnamon|gnome|all]` → `dist/<desktop>/ponitch@masahhmad/`. For GNOME the core modules are converted to ES modules.
+
+## Tests
 
 ```sh
-node tests/test_spring.js
-node tests/test_color.js
-node tests/test_calendar.js
-node tests/test_praytimes.js
-node tests/test_m3_logic.js
+for t in tests/test_*.js; do node "$t"; done
 python3 tests/test_build.py
 ```
 
-Uji musik tanpa aplikasi musik asli: `python3 tests/fake_mpris.py` menjalankan player MPRIS palsu yang bisa dikendalikan lewat D-Bus (`dev.ponitch.Test.SetTrack/SetStatus`, lihat docstring).
+To test music without a real player: `python3 tests/fake_mpris.py` runs a scriptable MPRIS player (`dev.ponitch.Test.SetTrack/SetStatus`, see its docstring).
 
-## Catatan pengembangan
+## Development notes
 
-- Setelah mengubah kode: `./install.sh`, lalu nonaktif/aktifkan extension.
-- Cinnamon meng-cache stylesheet. Setelah mengubah `stylesheet.css`, jalankan `Main.themeManager._changeTheme()` di Looking Glass (`Alt+F2` → `lg`) atau restart Cinnamon. **Jangan** `Main.loadTheme()`: ia membuang stylesheet semua applet/extension dari tema aktif.
-- Log Cinnamon: `~/.xsession-errors`.
-- Jangan pakai `box-shadow` pada notch: St mem-blur ulang di CPU tiap ukuran berubah (PLAN.md §4A.6).
+- After changing code: `./install.sh`, then disable and re-enable the extension. GNOME caches ES modules, so on GNOME you need to log out and back in, or test in a nested shell (`dbus-run-session -- gnome-shell --nested --wayland`).
+- Cinnamon caches stylesheets. After changing `stylesheet.css`, run `Main.themeManager._changeTheme()` in Looking Glass (`Alt+F2` → `lg`) or restart Cinnamon. **Don't** use `Main.loadTheme()`: it drops every applet/extension stylesheet from the active theme.
+- Logs: `~/.xsession-errors` (Cinnamon), `journalctl --user -b` (GNOME).
+- Don't put `box-shadow` on the notch: St re-blurs it on the CPU on every size change (PLAN.md §4A.6).
+- GNOME notifications and the extension preferences window run under `gjs`. If the `gjs` package is missing (it can be, on a Mint machine with GNOME added), GNOME shows no notifications at all.
 
-## Copot
+## Uninstall
 
 ```sh
 ./uninstall.sh

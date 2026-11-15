@@ -1,5 +1,6 @@
 // Notification banner (closed notch) and Notifications tab (PLAN.md §4.8, §4A.4).
 const { iconButton, centered, setScrollChild, deferred } = require('./widgets');
+const { _ } = require('./i18n');
 
 let Clutter, St;
 
@@ -29,16 +30,16 @@ function buildBanner(item) {
         text.add_child(new St.Label({ text: sub, style_class: 'ponitch-banner-body' }));
     box.add_child(text);
     if (item.urgency === 'critical')
-        box.add_child(new St.Label({ text: 'Click to open', style_class: 'ponitch-alert-hint', y_align: Clutter.ActorAlign.CENTER }));
+        box.add_child(new St.Label({ text: _('Click to open'), style_class: 'ponitch-alert-hint', y_align: Clutter.ActorAlign.CENTER }));
     return { actor: box };
 }
 
 const ago = time => {
     const s = Math.floor((Date.now() - time) / 1000);
     if (s < 60)
-        return 'now';
+        return _('now');
     if (s < 3600)
-        return `${Math.floor(s / 60)}m`;
+        return _('%sm', Math.floor(s / 60));
     const d = new Date(time);
     return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 };
@@ -50,7 +51,7 @@ function buildNotificationsTab(ctx) {
     const box = new St.BoxLayout({ vertical: true, style_class: 'ponitch-notifs', x_expand: true, y_expand: true });
     const head = new St.BoxLayout({ style_class: 'ponitch-list-head' });
     const count = new St.Label({ style_class: 'ponitch-list-title', x_expand: true, y_align: Clutter.ActorAlign.CENTER });
-    const clear = new St.Button({ label: 'Clear all', style_class: 'ponitch-text-btn', can_focus: true });
+    const clear = new St.Button({ label: _('Clear all'), style_class: 'ponitch-text-btn', can_focus: true });
     clear.connect('clicked', () => svc.clear());
     head.add_child(count);
     head.add_child(clear);
@@ -64,15 +65,15 @@ function buildNotificationsTab(ctx) {
     const draw = () => {
         items.destroy_all_children();
         const list = svc.items;
-        count.text = list.length ? `Notifications · ${list.length}` : 'Notifications';
+        count.text = list.length ? _('Notifications · %s', list.length) : _('Notifications');
         clear.visible = list.length > 0;
         if (!list.length)
-            items.add_child(new St.Label({ text: 'No notifications', style_class: 'ponitch-muted' }));
+            items.add_child(new St.Label({ text: _('No notifications'), style_class: 'ponitch-muted' }));
         for (const item of list) {
             const card = new St.BoxLayout({ style_class: 'ponitch-notif' + (item.urgency === 'critical' ? ' critical' : '') });
             card.add_child(appIcon(item, 'ponitch-notif-icon'));
             const text = new St.BoxLayout({ vertical: true, x_expand: true });
-            text.add_child(new St.Label({ text: `${item.app || 'Notification'} · ${ago(item.time)}`, style_class: 'ponitch-notif-meta' }));
+            text.add_child(new St.Label({ text: `${item.app || _('Notification')} · ${ago(item.time)}`, style_class: 'ponitch-notif-meta' }));
             if (item.title)
                 text.add_child(new St.Label({ text: oneLine(item.title), style_class: 'ponitch-notif-title' }));
             if (item.body) {

@@ -1,13 +1,14 @@
 // Control tab: switches that change the system (PLAN.md §4.3). Every control reflects outside
 // changes through the services' subscriptions; nothing polls.
 const { iconButton, centered, makeSlider, setScrollChild, deferred } = require('./widgets');
+const { _, N_ } = require('./i18n');
 
 let Clutter, St;
 
 const PROFILES = [
-    ['power-saver', 'power-profile-power-saver-symbolic', 'Saver'],
-    ['balanced', 'power-profile-balanced-symbolic', 'Balanced'],
-    ['performance', 'power-profile-performance-symbolic', 'Performance'],
+    ['power-saver', 'power-profile-power-saver-symbolic', N_('Saver')],
+    ['balanced', 'power-profile-balanced-symbolic', N_('Balanced')],
+    ['performance', 'power-profile-performance-symbolic', N_('Performance')],
 ];
 
 // ctx: { gi, power, audio, network, bluetooth, platform }
@@ -28,7 +29,7 @@ function buildControl(ctx) {
     const tiles = new St.BoxLayout({ style_class: 'ponitch-tiles' });
     main.add_child(tiles);
 
-    const wifi = tile('network-wireless-signal-excellent-symbolic', 'Wi-Fi', () => ctx.network.setEnabled(!ctx.network.wifi.enabled),
+    const wifi = tile('network-wireless-signal-excellent-symbolic', _('Wi-Fi'), () => ctx.network.setEnabled(!ctx.network.wifi.enabled),
         () => openList(wifiList));
     watch(ctx.network, () => {
         const w = ctx.network.wifi;
@@ -36,7 +37,7 @@ function buildControl(ctx) {
         if (!w)
             return;
         const on = w.enabled && w.hardware;
-        wifi.set(on, !w.hardware ? 'Hardware off' : !w.enabled ? 'Off' : (w.ssid || 'Not connected'),
+        wifi.set(on, !w.hardware ? _('Hardware off') : !w.enabled ? _('Off') : (w.ssid || _('Not connected')),
             !on ? 'network-wireless-offline-symbolic' : `network-wireless-signal-${signal(w.strength)}-symbolic`);
     });
 
@@ -48,15 +49,15 @@ function buildControl(ctx) {
         if (!s)
             return;
         const conn = s.devices.filter(d => d.connected);
-        bt.set(s.powered, !s.powered ? 'Off' : conn.length ? conn.map(d => d.name).join(', ') : 'On',
+        bt.set(s.powered, !s.powered ? _('Off') : conn.length ? conn.map(d => d.name).join(', ') : _('On'),
             s.powered ? 'bluetooth-active-symbolic' : 'bluetooth-disabled-symbolic');
     });
 
-    const awake = tile('preferences-desktop-screensaver-symbolic', 'Keep awake', () => ctx.power.setKeepAwake(!ctx.power.keepAwake));
-    watch(ctx.power, () => awake.set(ctx.power.keepAwake, ctx.power.keepAwake ? 'On' : 'Off'));
+    const awake = tile('preferences-desktop-screensaver-symbolic', _('Keep awake'), () => ctx.power.setKeepAwake(!ctx.power.keepAwake));
+    watch(ctx.power, () => awake.set(ctx.power.keepAwake, ctx.power.keepAwake ? _('On') : _('Off')));
 
-    const dnd = tile('notifications-disabled-symbolic', 'Do not disturb', () => ctx.platform.dnd.set(!ctx.platform.dnd.get()));
-    refreshers.push(() => dnd.set(ctx.platform.dnd.get(), ctx.platform.dnd.get() ? 'On' : 'Off'));
+    const dnd = tile('notifications-disabled-symbolic', _('Do not disturb'), () => ctx.platform.dnd.set(!ctx.platform.dnd.get()));
+    refreshers.push(() => dnd.set(ctx.platform.dnd.get(), ctx.platform.dnd.get() ? _('On') : _('Off')));
     unsubs.push(ctx.platform.dnd.watch(() => refreshers.forEach(f => f())));
     [wifi, bt, awake, dnd].forEach(t => tiles.add_child(t.actor));
 
@@ -77,7 +78,7 @@ function buildControl(ctx) {
     const segButtons = PROFILES.map(([id, icon, label]) => {
         const inner = new St.BoxLayout({ style_class: 'ponitch-seg-inner' });
         inner.add_child(new St.Icon({ icon_name: icon, style_class: 'ponitch-btn-icon' }));
-        inner.add_child(new St.Label({ text: label, y_align: Clutter.ActorAlign.CENTER }));
+        inner.add_child(new St.Label({ text: _(label), y_align: Clutter.ActorAlign.CENTER }));
         const b = new St.Button({ style_class: 'ponitch-seg', child: inner, x_expand: true, can_focus: true });
         b.connect('clicked', () => ctx.power.setProfile(id));
         segs.add_child(b);
@@ -125,19 +126,19 @@ function buildControl(ctx) {
 
     function wifiList() {
         ctx.network.scan();
-        return listPage('Wi-Fi', ctx.network, () => ctx.network.networks.map(n => ({
+        return listPage(_('Wi-Fi'), ctx.network, () => ctx.network.networks.map(n => ({
             icon: n.secure ? 'network-wireless-encrypted-symbolic' : `network-wireless-signal-${signal(n.strength)}-symbolic`,
-            name: n.ssid, detail: n.active ? 'Connected' : `${n.strength}%`, active: n.active,
+            name: n.ssid, detail: n.active ? _('Connected') : `${n.strength}%`, active: n.active,
             activate: () => ctx.network.connect(n.ssid),
-        })), 'No networks found');
+        })), _('No networks found'));
     }
 
     function btList() {
-        return listPage('Bluetooth', ctx.bluetooth, () => (ctx.bluetooth.state ? ctx.bluetooth.state.devices : []).map(d => ({
+        return listPage(_('Bluetooth'), ctx.bluetooth, () => (ctx.bluetooth.state ? ctx.bluetooth.state.devices : []).map(d => ({
             icon: `${d.icon}-symbolic`, name: d.name,
-            detail: [d.connected ? 'Connected' : 'Not connected', d.battery !== null ? `${d.battery}%` : null].filter(Boolean).join(' · '),
+            detail: [d.connected ? _('Connected') : _('Not connected'), d.battery !== null ? `${d.battery}%` : null].filter(Boolean).join(' · '),
             active: d.connected, activate: () => ctx.bluetooth.toggleDevice(d.path),
-        })), 'No paired devices');
+        })), _('No paired devices'));
     }
 
     function listPage(title, svc, rows, emptyText) {
@@ -227,7 +228,7 @@ function sliderRow(icon, onIcon, onChange) {
             if (!s)
                 return;
             slider.setValue(s.volume);
-            value.text = s.muted ? 'Muted' : `${Math.round(s.volume * 100)}%`;
+            value.text = s.muted ? _('Muted') : `${Math.round(s.volume * 100)}%`;
             if (iconBase)
                 btn.setIcon(`${iconBase}-${s.muted ? 'muted' : 'high'}-symbolic`);
             btn.checked = s.muted;

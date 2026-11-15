@@ -28,6 +28,15 @@ if [ -e "$extdir/$uuid" ] && [ ! -L "$extdir/$uuid" ]; then
     exit 1
 fi
 ln -sfn "$here/dist/$desktop/$uuid" "$extdir/$uuid"
+if [ "$desktop" = cinnamon ]; then
+    # Cinnamon (and its settings window) read xlet translations from ~/.local/share/locale.
+    for mo in "$here/dist/cinnamon/$uuid"/locale/*/LC_MESSAGES/"$uuid.mo"; do
+        [ -e "$mo" ] || continue
+        lang=$(basename "$(dirname "$(dirname "$mo")")")
+        mkdir -p "$HOME/.local/share/locale/$lang/LC_MESSAGES"
+        ln -sf "$mo" "$HOME/.local/share/locale/$lang/LC_MESSAGES/$uuid.mo"
+    done
+fi
 chmod +x "$here/bin/notchctl"
 ln -sf "$here/bin/notchctl" "$HOME/.local/bin/notchctl"
 echo "Installed for $desktop. Enable 'ponitch' in your desktop's Extensions settings."

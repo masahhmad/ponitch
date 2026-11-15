@@ -1,6 +1,7 @@
 // Prayer card (Home) and Prayer tab (PLAN.md §4.6).
 const { ticker } = require('./widgets');
 const { countdown } = require('./activity');
+const { _ } = require('./i18n');
 
 let Clutter, St;
 
@@ -32,13 +33,13 @@ function buildPrayerCard(ctx) {
     const name = new St.Label({ style_class: 'ponitch-card-big' });
     const left = new St.Label({ style_class: 'ponitch-card-sub' });
     const date = new St.Label({ style_class: 'ponitch-muted small', text: hijri() });
-    [sectionTitle('daytime-sunset-symbolic', 'Prayer'), name, left, date].forEach(a => box.add_child(a));
+    [sectionTitle('daytime-sunset-symbolic', _('Prayer')), name, left, date].forEach(a => box.add_child(a));
     const btn = new St.Button({ style_class: 'ponitch-card-btn', child: box, can_focus: true });
     btn.connect('clicked', () => ctx.openTab('prayer'));
     const draw = () => {
         const next = ctx.prayer.next;
-        name.text = next ? `${next.name} ${hhmm(next.at)}` : 'Loading…';
-        left.text = next ? `in ${countdown(next.at, Date.now())}` : '';
+        name.text = next ? `${next.name} ${hhmm(next.at)}` : _('Loading…');
+        left.text = next ? _('in %s', countdown(next.at, Date.now())) : '';
     };
     const unsub = ctx.prayer.subscribe(draw);
     btn.connect('destroy', unsub);
@@ -61,10 +62,10 @@ function buildPrayerTab(ctx) {
         const p = ctx.prayer;
         grid.destroy_all_children();
         if (!p.today) {
-            head.text = 'Loading…';
+            head.text = _('Loading…');
             return;
         }
-        const source = p.today.source === 'kemenag' ? 'Kemenag RI' : 'calculated offline';
+        const source = p.today.source === 'kemenag' ? 'Kemenag RI' : _('calculated offline');
         head.text = `${p.today.location} · ${source} · ${hijri()}`;
         const next = p.next;
         p.list.forEach((t, i) => {

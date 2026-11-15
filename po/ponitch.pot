@@ -1,0 +1,551 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-15 15:50+0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:11
+#, no-javascript-format
+msgid "Notch shape"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:19
+#, no-javascript-format
+msgid "Attached (joined to the top edge)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:19
+#, no-javascript-format
+msgid "Floating (pill below the top edge)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:15
+#, no-javascript-format
+msgid "Notch colour"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Black matches a real notch. Text stays white, so keep the colour dark."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:20
+#, no-javascript-format
+msgid "Opacity (below 100% gives a glass look)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:24
+#, no-javascript-format
+msgid "Open the panel on hover"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Off: hovering only peeks, clicking opens the panel."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:29
+#, no-javascript-format
+msgid "Delay before closing when the pointer leaves"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:34
+#, no-javascript-format
+msgid "Open panel width"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:38
+#, no-javascript-format
+msgid "Show volume and brightness in the notch"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Replaces the desktop's on-screen display. Off: the desktop's own OSD is used."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:42
+#, no-javascript-format
+msgid "Show music from media players (MPRIS)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:46
+#, no-javascript-format
+msgid "Animate the equalizer while music plays"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Costs about 3% of one CPU core while music plays (measured on Cinnamon/X11)."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:50
+#, no-javascript-format
+msgid "Control tab (Wi-Fi, Bluetooth, volume, brightness, power)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:14
+#, no-javascript-format
+msgid "Prayer times"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:54
+#, no-javascript-format
+msgid "Show prayer times"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:58
+#, no-javascript-format
+msgid "City in Indonesia (official Kemenag schedule)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Leave empty outside Indonesia: times are then calculated offline from the "
+"coordinates and method below."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:63
+#, no-javascript-format
+msgid "Latitude (offline calculation)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:68
+#, no-javascript-format
+msgid "Longitude (offline calculation)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:82
+#, no-javascript-format
+msgid "Calculation method"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Kemenag RI (Indonesia)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Muslim World League"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "ISNA (North America)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Egyptian General Authority"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "Umm al-Qura (Makkah)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "Karachi"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "JAKIM (Malaysia)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "MUIS (Singapore)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/core/prayer.js:11
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:90
+#, no-javascript-format
+msgid "Asr"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:22
+#, no-javascript-format
+msgid "Shafi'i, Maliki, Hanbali"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:22
+#, no-javascript-format
+msgid "Hanafi"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:94
+#, no-javascript-format
+msgid "Adhan sound (optional)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:303
+#, no-javascript-format
+msgid "Pomodoro"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:98
+#, no-javascript-format
+msgid "Pomodoro timer"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Durations and the long-break interval are set in the Pomodoro tab."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/core/stopwatch_ui.js:12
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:102
+#, no-javascript-format
+msgid "Work stopwatch"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:103
+#, no-javascript-format
+msgid "Keeps counting while the computer is off, until you pause or reset it."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:301
+#, no-javascript-format
+msgid "Todo"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:107
+#, no-javascript-format
+msgid "Todo list"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:308
+#: src/core/notifications_ui.js:68 src/gnome/prefs.js:15
+#, no-javascript-format
+msgid "Notifications"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:111
+#, no-javascript-format
+msgid "Show notifications in the notch"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Replaces the desktop's notification banner. The notifications applet still "
+"keeps them."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:115
+#, no-javascript-format
+msgid "Keep a local history (last 500)"
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Stored in ~/.local/share/ponitch/notifications.json, readable only by you. "
+"Notifications can contain private text such as messages or login codes."
+msgstr ""
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:119
+#, no-javascript-format
+msgid "Open/close shortcut"
+msgstr ""
+
+#: src/core/activity.js:27 src/core/notch.js:306
+msgid "Stopwatch"
+msgstr ""
+
+#: src/core/activity.js:41
+msgid "Take a break!"
+msgstr ""
+
+#: src/core/activity.js:42
+msgid "Take a long break!"
+msgstr ""
+
+#: src/core/activity.js:43
+msgid "Time to focus!"
+msgstr ""
+
+#: src/core/control_ui.js:9
+msgid "Saver"
+msgstr ""
+
+#: src/core/control_ui.js:10
+msgid "Balanced"
+msgstr ""
+
+#: src/core/control_ui.js:11
+msgid "Performance"
+msgstr ""
+
+#: src/core/control_ui.js:32 src/core/control_ui.js:129
+msgid "Wi-Fi"
+msgstr ""
+
+#: src/core/control_ui.js:40
+msgid "Hardware off"
+msgstr ""
+
+#: src/core/control_ui.js:40 src/core/control_ui.js:139
+msgid "Not connected"
+msgstr ""
+
+#: src/core/control_ui.js:40 src/core/control_ui.js:52
+#: src/core/control_ui.js:57 src/core/control_ui.js:60
+msgid "Off"
+msgstr ""
+
+#: src/core/control_ui.js:52 src/core/control_ui.js:57
+#: src/core/control_ui.js:60
+msgid "On"
+msgstr ""
+
+#: src/core/control_ui.js:56
+msgid "Keep awake"
+msgstr ""
+
+#: src/core/control_ui.js:59
+msgid "Do not disturb"
+msgstr ""
+
+#: src/core/control_ui.js:131 src/core/control_ui.js:139
+msgid "Connected"
+msgstr ""
+
+#: src/core/control_ui.js:133
+msgid "No networks found"
+msgstr ""
+
+#: src/core/control_ui.js:137
+msgid "Bluetooth"
+msgstr ""
+
+#: src/core/control_ui.js:141
+msgid "No paired devices"
+msgstr ""
+
+#: src/core/control_ui.js:231
+msgid "Muted"
+msgstr ""
+
+#: src/core/home_ui.js:24
+msgid "Now Playing"
+msgstr ""
+
+#: src/core/home_ui.js:26 src/core/music_ui.js:112 src/core/music_ui.js:203
+msgid "Nothing playing"
+msgstr ""
+
+#: src/core/notch.js:295
+msgid "Home"
+msgstr ""
+
+#: src/core/notch.js:297
+msgid "Music"
+msgstr ""
+
+#: src/core/notch.js:299 src/core/prayer_ui.js:36
+msgid "Prayer"
+msgstr ""
+
+#: src/core/notch.js:310
+msgid "Control"
+msgstr ""
+
+#: src/core/notch.js:372
+msgid "Click to dismiss"
+msgstr ""
+
+#: src/core/notch.js:394
+msgid "Done"
+msgstr ""
+
+#: src/core/notch.js:394
+msgid "Now"
+msgstr ""
+
+#: src/core/notch.js:406
+msgid "Exit full screen"
+msgstr ""
+
+#: src/core/notifications_ui.js:33
+msgid "Click to open"
+msgstr ""
+
+#: src/core/notifications_ui.js:40
+msgid "now"
+msgstr ""
+
+#: src/core/notifications_ui.js:42
+#, javascript-format
+msgid "%sm"
+msgstr ""
+
+#: src/core/notifications_ui.js:54
+msgid "Clear all"
+msgstr ""
+
+#: src/core/notifications_ui.js:68
+#, javascript-format
+msgid "Notifications · %s"
+msgstr ""
+
+#: src/core/notifications_ui.js:71
+msgid "No notifications"
+msgstr ""
+
+#: src/core/notifications_ui.js:76
+msgid "Notification"
+msgstr ""
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:10
+msgid "Focus"
+msgstr ""
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:12
+msgid "Long break"
+msgstr ""
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:11
+msgid "Short break"
+msgstr ""
+
+#: src/core/pomodoro_ui.js:10 src/core/pomodoro_ui.js:11
+#: src/core/pomodoro_ui.js:12
+msgid "min"
+msgstr ""
+
+#: src/core/pomodoro_ui.js:13
+msgid "Long break every"
+msgstr ""
+
+#: src/core/pomodoro_ui.js:13
+msgid "sessions"
+msgstr ""
+
+#: src/core/pomodoro_ui.js:57
+#, javascript-format
+msgid "Session %s · long break every %s"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Dhuha"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Dhuhr"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Fajr"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Imsak"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Isha"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Maghrib"
+msgstr ""
+
+#: src/core/prayer.js:11
+msgid "Sunrise"
+msgstr ""
+
+#: src/core/prayer_ui.js:41 src/core/prayer_ui.js:65
+msgid "Loading…"
+msgstr ""
+
+#: src/core/prayer_ui.js:42
+#, javascript-format
+msgid "in %s"
+msgstr ""
+
+#: src/core/prayer_ui.js:68
+msgid "calculated offline"
+msgstr ""
+
+#: src/core/todo_ui.js:15
+#, javascript-format
+msgid "Tomorrow %s"
+msgstr ""
+
+#: src/core/todo_ui.js:23
+msgid "UP NEXT"
+msgstr ""
+
+#: src/core/todo_ui.js:32
+msgid "Nothing to do"
+msgstr ""
+
+#: src/core/todo_ui.js:54
+msgid "Add a task… e.g. \"Send report @15:30\" or \"tomorrow Meeting\""
+msgstr ""
+
+#: src/core/todo_ui.js:92
+msgid "No tasks yet"
+msgstr ""
+
+#: src/gnome/prefs.js:12
+msgid "Notch"
+msgstr ""
+
+#: src/gnome/prefs.js:13
+msgid "Features"
+msgstr ""
+
+#: src/gnome/prefs.js:94
+msgid "None"
+msgstr ""
+
+#: src/gnome/prefs.js:97
+msgid "Choose…"
+msgstr ""
+
+#: src/gnome/prefs.js:107
+msgid "Clear"
+msgstr ""

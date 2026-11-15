@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Same keys as src/cinnamon/settings-schema.json (checked by tests/test_build.py). -->
-<schemalist>
+<schemalist gettext-domain="ponitch@masahhmad">
   <schema id="org.gnome.shell.extensions.ponitch" path="/org/gnome/shell/extensions/ponitch/">
     <key name="shape" type="s">
       <choices>
@@ -96,6 +96,11 @@
     <key name="pomodoro-enabled" type="b">
       <default>true</default>
       <summary>Pomodoro timer</summary>
+    </key>
+    <key name="stopwatch-enabled" type="b">
+      <default>true</default>
+      <summary>Work stopwatch</summary>
+      <description>Keeps counting while the computer is off, until you pause or reset it.</description>
     </key>
     <key name="todo-enabled" type="b">
       <default>true</default>

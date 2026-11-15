@@ -151,6 +151,12 @@
         "description": "Pomodoro timer",
         "tooltip": "Durations and the long-break interval are set in the Pomodoro tab."
     },
+    "stopwatch-enabled": {
+        "type": "switch",
+        "default": true,
+        "description": "Work stopwatch",
+        "tooltip": "Keeps counting while the computer is off, until you pause or reset it."
+    },
     "todo-header": {
         "type": "header",
         "description": "Todo"

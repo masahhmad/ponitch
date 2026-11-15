@@ -4,7 +4,9 @@
 const { Emitter } = require('./emitter');
 const { initStore, dataPath, readJson, writeJson, onResume, at } = require('./store');
 
-const LABELS = { focus: 'Focus', short: 'Short break', long: 'Long break' };
+const { _, N_ } = require('./i18n');
+
+const LABELS = { focus: N_('Focus'), short: N_('Short break'), long: N_('Long break') };
 // Allowed values (minutes, or sessions for cycles) for the steppers in the tab.
 const LIMITS = { focus: [1, 180], short: [1, 60], long: [1, 120], cycles: [1, 12] };
 const DEFAULTS = { focus: 25, short: 5, long: 15, cycles: 4 };
@@ -55,7 +57,7 @@ var PomodoroService = class PomodoroService extends Emitter {
         const s = this.state;
         const total = this._duration(s.phase);
         const remaining = s.running ? Math.max(0, s.endsAt - Date.now()) : (s.remaining || total);
-        return { ...s, label: LABELS[s.phase], total, remaining, ended: this._ended || null };
+        return { ...s, label: _(LABELS[s.phase]), total, remaining, ended: this._ended || null };
     }
 
     toggle() {

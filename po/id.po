@@ -1,0 +1,557 @@
+# Indonesian translation for ponitch.
+# This file is distributed under the same license as the ponitch package (GPL-3.0-or-later).
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ponitch\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-15 15:50+0700\n"
+"PO-Revision-Date: 2026-11-05 23:45+0700\n"
+"Last-Translator: masahhmad\n"
+"Language-Team: Indonesian\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:11
+#, no-javascript-format
+msgid "Notch shape"
+msgstr "Bentuk notch"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:19
+#, no-javascript-format
+msgid "Attached (joined to the top edge)"
+msgstr "Menempel (menyatu dengan tepi atas)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:19
+#, no-javascript-format
+msgid "Floating (pill below the top edge)"
+msgstr "Mengambang (pil di bawah tepi atas)"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:15
+#, no-javascript-format
+msgid "Notch colour"
+msgstr "Warna notch"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Black matches a real notch. Text stays white, so keep the colour dark."
+msgstr ""
+"Hitam cocok dengan notch sungguhan. Teks tetap putih, jadi pilih warna gelap."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:20
+#, no-javascript-format
+msgid "Opacity (below 100% gives a glass look)"
+msgstr "Opasitas (di bawah 100% memberi efek kaca)"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:24
+#, no-javascript-format
+msgid "Open the panel on hover"
+msgstr "Buka panel saat kursor di atasnya"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Off: hovering only peeks, clicking opens the panel."
+msgstr "Mati: hover hanya mengintip, klik membuka panel."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:29
+#, no-javascript-format
+msgid "Delay before closing when the pointer leaves"
+msgstr "Jeda sebelum menutup saat kursor keluar"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:34
+#, no-javascript-format
+msgid "Open panel width"
+msgstr "Lebar panel terbuka"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:38
+#, no-javascript-format
+msgid "Show volume and brightness in the notch"
+msgstr "Tampilkan volume dan kecerahan di notch"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Replaces the desktop's on-screen display. Off: the desktop's own OSD is used."
+msgstr ""
+"Menggantikan OSD bawaan desktop. Mati: OSD bawaan desktop yang dipakai."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:42
+#, no-javascript-format
+msgid "Show music from media players (MPRIS)"
+msgstr "Tampilkan musik dari pemutar media (MPRIS)"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:46
+#, no-javascript-format
+msgid "Animate the equalizer while music plays"
+msgstr "Animasikan equalizer saat musik diputar"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Costs about 3% of one CPU core while music plays (measured on Cinnamon/X11)."
+msgstr ""
+"Memakan sekitar 3% satu core CPU saat musik diputar (diukur di Cinnamon/X11)."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:50
+#, no-javascript-format
+msgid "Control tab (Wi-Fi, Bluetooth, volume, brightness, power)"
+msgstr "Tab Kontrol (Wi-Fi, Bluetooth, volume, kecerahan, daya)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:14
+#, no-javascript-format
+msgid "Prayer times"
+msgstr "Jadwal sholat"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:54
+#, no-javascript-format
+msgid "Show prayer times"
+msgstr "Tampilkan jadwal sholat"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:58
+#, no-javascript-format
+msgid "City in Indonesia (official Kemenag schedule)"
+msgstr "Kota di Indonesia (jadwal resmi Kemenag)"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Leave empty outside Indonesia: times are then calculated offline from the "
+"coordinates and method below."
+msgstr ""
+"Kosongkan bila di luar Indonesia: waktu lalu dihitung offline dari koordinat "
+"dan metode di bawah."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:63
+#, no-javascript-format
+msgid "Latitude (offline calculation)"
+msgstr "Lintang (perhitungan offline)"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:68
+#, no-javascript-format
+msgid "Longitude (offline calculation)"
+msgstr "Bujur (perhitungan offline)"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:82
+#, no-javascript-format
+msgid "Calculation method"
+msgstr "Metode perhitungan"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Kemenag RI (Indonesia)"
+msgstr "Kemenag RI (Indonesia)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Muslim World League"
+msgstr "Liga Muslim Dunia"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "ISNA (North America)"
+msgstr "ISNA (Amerika Utara)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:20
+#, no-javascript-format
+msgid "Egyptian General Authority"
+msgstr "Otoritas Umum Mesir"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "Umm al-Qura (Makkah)"
+msgstr "Umm al-Qura (Makkah)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "Karachi"
+msgstr "Karachi"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "JAKIM (Malaysia)"
+msgstr "JAKIM (Malaysia)"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:21
+#, no-javascript-format
+msgid "MUIS (Singapore)"
+msgstr "MUIS (Singapura)"
+
+#: src/cinnamon/settings-schema.json src/core/prayer.js:11
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:90
+#, no-javascript-format
+msgid "Asr"
+msgstr "Ashar"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:22
+#, no-javascript-format
+msgid "Shafi'i, Maliki, Hanbali"
+msgstr "Syafi'i, Maliki, Hanbali"
+
+#: src/cinnamon/settings-schema.json src/gnome/prefs.js:22
+#, no-javascript-format
+msgid "Hanafi"
+msgstr "Hanafi"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:94
+#, no-javascript-format
+msgid "Adhan sound (optional)"
+msgstr "Suara adzan (opsional)"
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:303
+#, no-javascript-format
+msgid "Pomodoro"
+msgstr "Pomodoro"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:98
+#, no-javascript-format
+msgid "Pomodoro timer"
+msgstr "Timer Pomodoro"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid "Durations and the long-break interval are set in the Pomodoro tab."
+msgstr "Durasi dan jarak istirahat panjang diatur di tab Pomodoro."
+
+#: src/cinnamon/settings-schema.json src/core/stopwatch_ui.js:12
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:102
+#, no-javascript-format
+msgid "Work stopwatch"
+msgstr "Stopwatch kerja"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:103
+#, no-javascript-format
+msgid "Keeps counting while the computer is off, until you pause or reset it."
+msgstr "Tetap menghitung saat komputer mati, sampai di-pause atau di-reset."
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:301
+#, no-javascript-format
+msgid "Todo"
+msgstr "Tugas"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:107
+#, no-javascript-format
+msgid "Todo list"
+msgstr "Daftar tugas"
+
+#: src/cinnamon/settings-schema.json src/core/notch.js:308
+#: src/core/notifications_ui.js:68 src/gnome/prefs.js:15
+#, no-javascript-format
+msgid "Notifications"
+msgstr "Notifikasi"
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:111
+#, no-javascript-format
+msgid "Show notifications in the notch"
+msgstr "Tampilkan notifikasi di notch"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Replaces the desktop's notification banner. The notifications applet still "
+"keeps them."
+msgstr ""
+"Menggantikan banner notifikasi desktop. Applet notifikasi tetap menyimpannya."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:115
+#, no-javascript-format
+msgid "Keep a local history (last 500)"
+msgstr "Simpan riwayat lokal (500 terakhir)"
+
+#: src/cinnamon/settings-schema.json
+#, no-javascript-format
+msgid ""
+"Stored in ~/.local/share/ponitch/notifications.json, readable only by you. "
+"Notifications can contain private text such as messages or login codes."
+msgstr ""
+"Disimpan di ~/.local/share/ponitch/notifications.json, hanya bisa dibaca "
+"olehmu. Notifikasi bisa berisi teks pribadi seperti pesan atau kode login."
+
+#: src/cinnamon/settings-schema.json
+#: src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml:119
+#, no-javascript-format
+msgid "Open/close shortcut"
+msgstr "Pintasan buka/tutup"
+
+#: src/core/activity.js:27 src/core/notch.js:306
+msgid "Stopwatch"
+msgstr "Stopwatch"
+
+#: src/core/activity.js:41
+msgid "Take a break!"
+msgstr "Waktunya istirahat!"
+
+#: src/core/activity.js:42
+msgid "Take a long break!"
+msgstr "Waktunya istirahat panjang!"
+
+#: src/core/activity.js:43
+msgid "Time to focus!"
+msgstr "Waktunya fokus!"
+
+#: src/core/control_ui.js:9
+msgid "Saver"
+msgstr "Hemat"
+
+#: src/core/control_ui.js:10
+msgid "Balanced"
+msgstr "Seimbang"
+
+#: src/core/control_ui.js:11
+msgid "Performance"
+msgstr "Performa"
+
+#: src/core/control_ui.js:32 src/core/control_ui.js:129
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+#: src/core/control_ui.js:40
+msgid "Hardware off"
+msgstr "Perangkat keras mati"
+
+#: src/core/control_ui.js:40 src/core/control_ui.js:139
+msgid "Not connected"
+msgstr "Tidak tersambung"
+
+#: src/core/control_ui.js:40 src/core/control_ui.js:52
+#: src/core/control_ui.js:57 src/core/control_ui.js:60
+msgid "Off"
+msgstr "Mati"
+
+#: src/core/control_ui.js:52 src/core/control_ui.js:57
+#: src/core/control_ui.js:60
+msgid "On"
+msgstr "Nyala"
+
+#: src/core/control_ui.js:56
+msgid "Keep awake"
+msgstr "Tetap terjaga"
+
+#: src/core/control_ui.js:59
+msgid "Do not disturb"
+msgstr "Jangan ganggu"
+
+#: src/core/control_ui.js:131 src/core/control_ui.js:139
+msgid "Connected"
+msgstr "Tersambung"
+
+#: src/core/control_ui.js:133
+msgid "No networks found"
+msgstr "Tidak ada jaringan"
+
+#: src/core/control_ui.js:137
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+#: src/core/control_ui.js:141
+msgid "No paired devices"
+msgstr "Tidak ada perangkat yang dipasangkan"
+
+#: src/core/control_ui.js:231
+msgid "Muted"
+msgstr "Senyap"
+
+#: src/core/home_ui.js:24
+msgid "Now Playing"
+msgstr "Sedang Diputar"
+
+#: src/core/home_ui.js:26 src/core/music_ui.js:112 src/core/music_ui.js:203
+msgid "Nothing playing"
+msgstr "Tidak ada yang diputar"
+
+#: src/core/notch.js:295
+msgid "Home"
+msgstr "Beranda"
+
+#: src/core/notch.js:297
+msgid "Music"
+msgstr "Musik"
+
+#: src/core/notch.js:299 src/core/prayer_ui.js:36
+msgid "Prayer"
+msgstr "Sholat"
+
+#: src/core/notch.js:310
+msgid "Control"
+msgstr "Kontrol"
+
+#: src/core/notch.js:372
+msgid "Click to dismiss"
+msgstr "Klik untuk menutup"
+
+#: src/core/notch.js:394
+msgid "Done"
+msgstr "Selesai"
+
+#: src/core/notch.js:394
+msgid "Now"
+msgstr "Sekarang"
+
+#: src/core/notch.js:406
+msgid "Exit full screen"
+msgstr "Keluar dari layar penuh"
+
+#: src/core/notifications_ui.js:33
+msgid "Click to open"
+msgstr "Klik untuk membuka"
+
+#: src/core/notifications_ui.js:40
+msgid "now"
+msgstr "baru saja"
+
+#: src/core/notifications_ui.js:42
+#, javascript-format
+msgid "%sm"
+msgstr "%s mnt"
+
+#: src/core/notifications_ui.js:54
+msgid "Clear all"
+msgstr "Hapus semua"
+
+#: src/core/notifications_ui.js:68
+#, javascript-format
+msgid "Notifications · %s"
+msgstr "Notifikasi · %s"
+
+#: src/core/notifications_ui.js:71
+msgid "No notifications"
+msgstr "Tidak ada notifikasi"
+
+#: src/core/notifications_ui.js:76
+msgid "Notification"
+msgstr "Notifikasi"
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:10
+msgid "Focus"
+msgstr "Fokus"
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:12
+msgid "Long break"
+msgstr "Istirahat panjang"
+
+#: src/core/pomodoro.js:9 src/core/pomodoro_ui.js:11
+msgid "Short break"
+msgstr "Istirahat pendek"
+
+#: src/core/pomodoro_ui.js:10 src/core/pomodoro_ui.js:11
+#: src/core/pomodoro_ui.js:12
+msgid "min"
+msgstr "mnt"
+
+#: src/core/pomodoro_ui.js:13
+msgid "Long break every"
+msgstr "Istirahat panjang tiap"
+
+#: src/core/pomodoro_ui.js:13
+msgid "sessions"
+msgstr "sesi"
+
+#: src/core/pomodoro_ui.js:57
+#, javascript-format
+msgid "Session %s · long break every %s"
+msgstr "Sesi %s · istirahat panjang tiap %s"
+
+#: src/core/prayer.js:11
+msgid "Dhuha"
+msgstr "Dhuha"
+
+#: src/core/prayer.js:11
+msgid "Dhuhr"
+msgstr "Dzuhur"
+
+#: src/core/prayer.js:11
+msgid "Fajr"
+msgstr "Subuh"
+
+#: src/core/prayer.js:11
+msgid "Imsak"
+msgstr "Imsak"
+
+#: src/core/prayer.js:11
+msgid "Isha"
+msgstr "Isya"
+
+#: src/core/prayer.js:11
+msgid "Maghrib"
+msgstr "Maghrib"
+
+#: src/core/prayer.js:11
+msgid "Sunrise"
+msgstr "Terbit"
+
+#: src/core/prayer_ui.js:41 src/core/prayer_ui.js:65
+msgid "Loading…"
+msgstr "Memuat…"
+
+#: src/core/prayer_ui.js:42
+#, javascript-format
+msgid "in %s"
+msgstr "%s lagi"
+
+#: src/core/prayer_ui.js:68
+msgid "calculated offline"
+msgstr "dihitung offline"
+
+#: src/core/todo_ui.js:15
+#, javascript-format
+msgid "Tomorrow %s"
+msgstr "Besok %s"
+
+#: src/core/todo_ui.js:23
+msgid "UP NEXT"
+msgstr "BERIKUTNYA"
+
+#: src/core/todo_ui.js:32
+msgid "Nothing to do"
+msgstr "Tidak ada tugas"
+
+#: src/core/todo_ui.js:54
+msgid "Add a task… e.g. \"Send report @15:30\" or \"tomorrow Meeting\""
+msgstr "Tambah tugas… mis. \"Kirim laporan @15:30\" atau \"besok Rapat\""
+
+#: src/core/todo_ui.js:92
+msgid "No tasks yet"
+msgstr "Belum ada tugas"
+
+#: src/gnome/prefs.js:12
+msgid "Notch"
+msgstr "Notch"
+
+#: src/gnome/prefs.js:13
+msgid "Features"
+msgstr "Fitur"
+
+#: src/gnome/prefs.js:94
+msgid "None"
+msgstr "Tidak ada"
+
+#: src/gnome/prefs.js:97
+msgid "Choose…"
+msgstr "Pilih…"
+
+#: src/gnome/prefs.js:107
+msgid "Clear"
+msgstr "Hapus"

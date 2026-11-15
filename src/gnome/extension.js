@@ -6,9 +6,11 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { platform, resetPlatform } from './platform.js';
 import { App, SETTINGS } from './app.js';
+import { setGettext } from './i18n.js';
 
 export default class PonitchExtension extends Extension {
     enable() {
+        setGettext(s => this.gettext(s));
         this._settings = this.getSettings();
         this._cfg = {};
         this._app = new App(platform, this._cfg);
@@ -36,6 +38,7 @@ export default class PonitchExtension extends Extension {
             () => this._app.disable(),
             () => this._settingIds.forEach(id => this._settings.disconnect(id)),
             resetPlatform,
+            () => setGettext(null),
         ]) {
             try {
                 step();

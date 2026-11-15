@@ -4,20 +4,22 @@ import Adw from 'gi://Adw';
 import Gtk from 'gi://Gtk';
 import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
-import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
+// Group titles and choice labels are marked with _(); summaries come translated from the schema.
+const N_ = s => s;
 const GROUPS = [
-    ['Notch', ['shape', 'look-color', 'look-opacity', 'hover-opens-panel', 'close-delay', 'panel-width', 'toggle-key']],
-    ['Features', ['hud-enabled', 'music-enabled', 'music-animate-eq', 'control-enabled', 'pomodoro-enabled', 'todo-enabled']],
-    ['Prayer times', ['prayer-enabled', 'prayer-city', 'prayer-lat', 'prayer-lon', 'prayer-method', 'prayer-asr', 'prayer-adzan-file']],
-    ['Notifications', ['notifications-enabled', 'notifications-history']],
+    [N_('Notch'), ['shape', 'look-color', 'look-opacity', 'hover-opens-panel', 'close-delay', 'panel-width', 'toggle-key']],
+    [N_('Features'), ['hud-enabled', 'music-enabled', 'music-animate-eq', 'control-enabled', 'pomodoro-enabled', 'stopwatch-enabled', 'todo-enabled']],
+    [N_('Prayer times'), ['prayer-enabled', 'prayer-city', 'prayer-lat', 'prayer-lon', 'prayer-method', 'prayer-asr', 'prayer-adzan-file']],
+    [N_('Notifications'), ['notifications-enabled', 'notifications-history']],
 ];
 const STEPS = { 'close-delay': 50, 'panel-width': 10, 'look-opacity': 5 };
 const CHOICE_LABELS = {
-    attached: 'Attached (joined to the top edge)', floating: 'Floating (pill below the top edge)',
-    kemenag: 'Kemenag RI (Indonesia)', mwl: 'Muslim World League', isna: 'ISNA (North America)', egypt: 'Egyptian General Authority',
-    'umm-al-qura': 'Umm al-Qura (Makkah)', karachi: 'Karachi', jakim: 'JAKIM (Malaysia)', muis: 'MUIS (Singapore)',
-    shafii: "Shafi'i, Maliki, Hanbali", hanafi: 'Hanafi',
+    attached: N_('Attached (joined to the top edge)'), floating: N_('Floating (pill below the top edge)'),
+    kemenag: N_('Kemenag RI (Indonesia)'), mwl: N_('Muslim World League'), isna: N_('ISNA (North America)'), egypt: N_('Egyptian General Authority'),
+    'umm-al-qura': N_('Umm al-Qura (Makkah)'), karachi: N_('Karachi'), jakim: N_('JAKIM (Malaysia)'), muis: N_('MUIS (Singapore)'),
+    shafii: N_("Shafi'i, Maliki, Hanbali"), hanafi: N_('Hanafi'),
 };
 
 export default class PonitchPreferences extends ExtensionPreferences {
@@ -26,7 +28,7 @@ export default class PonitchPreferences extends ExtensionPreferences {
         const schema = settings.settings_schema;
         const page = new Adw.PreferencesPage();
         for (const [title, keys] of GROUPS) {
-            const group = new Adw.PreferencesGroup({ title });
+            const group = new Adw.PreferencesGroup({ title: _(title) });
             for (const key of keys)
                 group.add(row(settings, schema.get_key(key), window));
             page.add(group);
@@ -55,7 +57,7 @@ function row(settings, key, window) {
         return r;
     }
     if (rangeType === 'enum') {
-        const r = new Adw.ComboRow({ title, model: Gtk.StringList.new(rangeVal.map(v => CHOICE_LABELS[v] || v)) });
+        const r = new Adw.ComboRow({ title, model: Gtk.StringList.new(rangeVal.map(v => (CHOICE_LABELS[v] ? _(CHOICE_LABELS[v]) : v))) });
         const sync = () => { r.selected = Math.max(0, rangeVal.indexOf(settings.get_string(name))); };
         sync();
         settings.connect(`changed::${name}`, sync);
@@ -89,10 +91,10 @@ function colorRow(settings, name, title) {
 
 function fileRow(settings, name, title, window) {
     const r = new Adw.ActionRow({ title });
-    const show = () => { r.subtitle = settings.get_string(name) || 'None'; };
+    const show = () => { r.subtitle = settings.get_string(name) || _('None'); };
     show();
     settings.connect(`changed::${name}`, show);
-    const choose = new Gtk.Button({ label: 'Choose…', valign: Gtk.Align.CENTER });
+    const choose = new Gtk.Button({ label: _('Choose…'), valign: Gtk.Align.CENTER });
     choose.connect('clicked', () => {
         new Gtk.FileDialog({ title }).open(window, null, (d, res) => {
             try {
@@ -102,7 +104,7 @@ function fileRow(settings, name, title, window) {
             }
         });
     });
-    const clear = new Gtk.Button({ icon_name: 'edit-clear-symbolic', valign: Gtk.Align.CENTER, tooltip_text: 'Clear' });
+    const clear = new Gtk.Button({ icon_name: 'edit-clear-symbolic', valign: Gtk.Align.CENTER, tooltip_text: _('Clear') });
     clear.connect('clicked', () => settings.set_string(name, ''));
     r.add_suffix(choose);
     r.add_suffix(clear);

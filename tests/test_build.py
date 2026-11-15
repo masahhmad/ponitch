@@ -73,5 +73,17 @@ gnome_keys = set(re.findall(r'<key name="([a-z-]+)"', (ROOT / "src/gnome/schemas
 assert cinnamon_keys == gnome_keys, f"schemas differ: {cinnamon_keys ^ gnome_keys}"
 app_keys = set(re.findall(r"\['([a-z-]+)', '[A-Za-z]+', ", (ROOT / "src/core/app.js").read_text()))
 assert app_keys | {"toggle-key"} == cinnamon_keys, f"App SETTINGS vs schema: {app_keys ^ (cinnamon_keys - {'toggle-key'})}"
+# Translations: both builds ship the compiled catalogues; the template lists every string the
+# core marks, and each .po translates all of them (msgcmp fails on a missing msgid).
+pot = (ROOT / "po" / "ponitch.pot").read_text().replace('"\n"', "").replace('\\"', '"')  # join wrapped lines, unescape
+for p in sorted((ROOT / "src").rglob("*.js")):
+    for msgid in re.findall(r"\bN?_\('((?:[^'\\]|\\.)+)'", p.read_text()):
+        assert f'msgid "{msgid}"' in pot, \
+            f"{p.name}: {msgid!r} missing from po/ponitch.pot (run python3 build.py pot, then msgmerge)"
+for po in (ROOT / "po").glob("*.po"):
+    subprocess.run(["msgcmp", str(po), str(ROOT / "po" / "ponitch.pot")], check=True)
+    for desktop in build.DESKTOPS:
+        assert (build.DIST / desktop / build.UUID / "locale" / po.stem / "LC_MESSAGES" / f"{build.UUID}.mo").exists(), (desktop, po)
+assert 'gettext-domain="ponitch@masahhmad"' in (ROOT / "src/gnome/schemas/org.gnome.shell.extensions.ponitch.gschema.xml").read_text()
 
 print("test_build: ok")

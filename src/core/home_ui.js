@@ -7,6 +7,7 @@ const { iconButton } = require('./widgets');
 const { monthGrid } = require('./calendar');
 const { buildPrayerCard } = require('./prayer_ui');
 const { buildUpNext } = require('./todo_ui');
+const { _ } = require('./i18n');
 
 let Clutter, St, GLib;
 
@@ -20,9 +21,9 @@ function buildHome(ctx) {
     box.add_child(bottom);
 
     const audio = new St.BoxLayout({ vertical: true, style_class: 'ponitch-section ponitch-home-audio', x_expand: true });
-    audio.add_child(sectionTitle('audio-x-generic-symbolic', 'Now Playing'));
+    audio.add_child(sectionTitle('audio-x-generic-symbolic', _('Now Playing')));
     let player = null;
-    const empty = new St.Label({ text: 'Nothing playing', style_class: 'ponitch-muted' });
+    const empty = new St.Label({ text: _('Nothing playing'), style_class: 'ponitch-muted' });
     if (ctx.music) {
         player = buildPeek(ctx.music);
         player.actor.add_style_class_name('compact');
@@ -71,7 +72,7 @@ function buildMonth(weekStart) {
     box.add_child(grid);
 
     // Weekday initials from the locale (2026-11-01 was a Sunday).
-    const initials = [...Array(7)].map((_, i) => {
+    const initials = [...Array(7)].map((_d, i) => {
         const d = GLib.DateTime.new_local(2026, 11, 1 + ((i + weekStart) % 7), 0, 0, 0);
         return d.format('%a').slice(0, 1).toUpperCase();
     });

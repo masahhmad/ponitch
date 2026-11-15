@@ -10,6 +10,7 @@ const { NetworkService } = require('./network');
 const { BluetoothService } = require('./bluetooth');
 const { PrayerService } = require('./prayer');
 const { PomodoroService } = require('./pomodoro');
+const { StopwatchService } = require('./stopwatch');
 const { TodoService } = require('./todo');
 const { NotificationService } = require('./notifications');
 const { stopSound } = require('./sound');
@@ -29,6 +30,7 @@ const SETTINGS = [
     ['control-enabled', 'controlEnabled', 'control'],
     ['prayer-enabled', 'prayerEnabled', 'features'],
     ['pomodoro-enabled', 'pomodoroEnabled', 'features'],
+    ['stopwatch-enabled', 'stopwatchEnabled', 'features'],
     ['todo-enabled', 'todoEnabled', 'features'],
     ['notifications-enabled', 'notificationsEnabled', 'features'],
     ['notifications-history', 'notificationsHistory', 'features'],
@@ -120,13 +122,14 @@ var App = class App {
         this.notch.setMusic(this._music);
     }
 
-    // Prayer, pomodoro, todo and notifications run while enabled: they drive the closed notch.
+    // Prayer, pomodoro, stopwatch, todo and notifications run while enabled: they drive the closed notch.
     _bindFeatures() {
         this._stopFeatures();
         const c = this.cfg, p = this._platform;
         this._features = {
             prayer: c.prayerEnabled ? new PrayerService(p, this._prayerConfig()) : null,
             pomodoro: c.pomodoroEnabled ? new PomodoroService(p) : null,
+            stopwatch: c.stopwatchEnabled ? new StopwatchService(p) : null,
             todo: c.todoEnabled ? new TodoService(p) : null,
             notifications: c.notificationsEnabled ? new NotificationService(p, { history: c.notificationsHistory }) : null,
         };
@@ -191,7 +194,13 @@ var App = class App {
         const n = this.notch;
         switch (req.cmd) {
         case 'toggle': n.toggle(); break;
-        case 'open': case 'close': case 'tuck': case 'untuck':
+        case 'open':
+            if (typeof req.tab === 'string') {
+                n.openTab(req.tab);
+                break;
+            }
+            // falls through
+        case 'close': case 'tuck': case 'untuck':
             n.setState({ open: 'open', close: 'closed', tuck: 'tucked', untuck: 'closed' }[req.cmd]);
             break;
         case 'pin': case 'unpin':

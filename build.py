@@ -2,19 +2,23 @@
 """Build one extension folder per desktop from src/ (PLAN.md §2A).
 
   python3 build.py [cinnamon|gnome|all]
+  python3 build.py pot     regenerate po/ponitch.pot from the sources
 
 Output is flat (dist/<desktop>/<uuid>/*): Cinnamon resolves relative require()
 paths from the extension root, so core files must sit next to extension.js.
 """
+import json
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "src"
 DIST = ROOT / "dist"
+PO = ROOT / "po"
 UUID = "ponitch@masahhmad"
 DESKTOPS = ("cinnamon", "gnome")
 
@@ -59,14 +63,45 @@ def build(desktop):
         else:
             shutil.copy2(p, out / p.name)
     shutil.copy2(SRC / "stylesheet.css", out / "stylesheet.css")
+    for po in sorted(PO.glob("*.po")):
+        mo = out / "locale" / po.stem / "LC_MESSAGES" / f"{UUID}.mo"
+        mo.parent.mkdir(parents=True)
+        subprocess.run(["msgfmt", "--check", "-o", str(mo), str(po)], check=True)
     if (out / "schemas").is_dir():
         # A symlinked (not zip-installed) GNOME extension needs the compiled schema to load.
         subprocess.run(["glib-compile-schemas", "--strict", str(out / "schemas")], check=True)
     return out
 
 
+def make_pot():
+    """po/ponitch.pot from the JS sources, the GSettings schema and the Cinnamon settings schema."""
+    cinnamon = json.loads((SRC / "cinnamon" / "settings-schema.json").read_text())
+    texts = []
+    for v in cinnamon.values():
+        texts += [v[f] for f in ("description", "tooltip") if f in v] + list(v.get("options") or {})
+    with tempfile.TemporaryDirectory() as tmp:
+        # xgettext has no reader for Cinnamon's JSON, so feed its strings in as JS.
+        fake = Path(tmp) / "settings-schema.json.js"
+        # They are plain text, never format strings ("3% of" is not a placeholder).
+        fake.write_text("".join(f"/* xgettext:no-javascript-format */ _({json.dumps(t)});\n" for t in dict.fromkeys(texts)))
+        sources = sorted((SRC / "core").glob("*.js")) + [SRC / "gnome" / "prefs.js"]
+        out = PO / "ponitch.pot"
+        subprocess.run(["xgettext", "--from-code=UTF-8", "--language=JavaScript", "--keyword=_", "--keyword=N_",
+                        "--add-comments=Translators", "--package-name=ponitch", "--sort-by-file",
+                        "-o", str(out), *(str(p.relative_to(ROOT)) for p in sources), str(fake)], check=True, cwd=ROOT)
+        subprocess.run(["xgettext", "--join-existing", "--from-code=UTF-8", "-o", str(out),
+                        *(str(p.relative_to(ROOT)) for p in (SRC / "gnome" / "schemas").glob("*.gschema.xml"))], check=True, cwd=ROOT)
+        # The temp file's path is meaningless to translators.
+        text = re.sub(r"\S*settings-schema\.json\.js:\d+", "src/cinnamon/settings-schema.json", out.read_text())
+        out.write_text(text)
+    return out
+
+
 def main(argv):
     target = argv[1] if len(argv) > 1 else "all"
+    if target == "pot":
+        print(make_pot())
+        return 0
     if target not in DESKTOPS + ("all",):
         print(__doc__.strip(), file=sys.stderr)
         return 2

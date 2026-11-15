@@ -865,3 +865,14 @@
 .ponitch-text-btn:hover {
     background-color: rgba(255, 255, 255, 0.18);
 }
+
+/* Expanded pomodoro (PLAN.md: fullscreen countdown). */
+.ponitch-focus {
+    background-color: #000;
+}
+
+.ponitch-focus-time {
+    color: #fff;
+    font-weight: bold;
+    font-feature-settings: "tnum";
+}

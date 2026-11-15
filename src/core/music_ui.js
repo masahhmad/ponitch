@@ -1,6 +1,7 @@
 // Music views (PLAN.md §4.2, §4A.4). Each builder returns { actor, update(track) }.
 const { rgba } = require('./color');
 const { iconButton, centered } = require('./widgets');
+const { _ } = require('./i18n');
 
 const EQ_HEIGHTS = [0.8, 1, 0.88, 0.95, 0.76];
 const EQ_MAX = 11;
@@ -108,7 +109,7 @@ function buildPeek(svc) {
     [art, text, centered(prev), centered(play), centered(next)].forEach(a => box.add_child(a));
     const update = track => {
         art.update(track);
-        title.text = (track && track.title) || 'Nothing playing';
+        title.text = (track && track.title) || _('Nothing playing');
         artist.text = (track && track.artist) || (track ? track.identity : '');
         play.setIcon(playIcon(track));
         prev.reactive = !!track && track.canPrevious;
@@ -199,7 +200,7 @@ function buildPage(svc) {
         current = t;
         art.update(t);
         halo.set_style(`background-color: ${rgba(t && t.accent, t && t.accent ? 0.22 : 0)};`);
-        title.text = (t && t.title) || 'Nothing playing';
+        title.text = (t && t.title) || _('Nothing playing');
         artist.text = (t && t.artist) || '';
         player.label = t ? (t.players > 1 ? `${t.identity}  ⇄` : t.identity) : '';
         player.visible = !!t;

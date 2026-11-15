@@ -1,7 +1,7 @@
 # ponitch: PLAN.md
 
 Notch interaktif yang ringan untuk desktop Linux berbasis **Cinnamon** dan **GNOME Shell** (Linux Mint, Ubuntu, dan distro lain), terinspirasi Poni (Windows), dengan desain ala notchy.dev.
-Status: **M0–M4 dan M6 selesai di Cinnamon** (2026-11-05). **M5 (Calendar) di-drop**. **MG sedang berjalan**: adapter GNOME 46 ditulis dan lolos cek statis, menunggu `gnome-shell` terpasang untuk uji nested. Lalu M7 (i18n & rilis).
+Status: **M0–M4 dan M6 selesai di Cinnamon** (2026-11-05). **M5 (Calendar) di-drop**. **MG selesai** (GNOME 46, uji nested 2026-11-09; GNOME lalu dicopot dari mesin pengembang atas permintaan user, uji GNOME berikutnya di VM). **M7**: i18n selesai (Indonesia); rilis GitHub/EGO/Spices belum.
 
 > Nama `ponitch`. UUID extension: `ponitch@masahhmad`. Repo: `github.com/masahhmad/ponitch` (belum dibuat). Lisensi: **GPL-3.0-or-later**.
 
@@ -141,7 +141,7 @@ Fitur yang tidak bisa dibuat setara di salah satu desktop disembunyikan di deskt
 Top bar GNOME selalu di atas dengan jam di tengah, persis di tempat notch. Rencana default: notch **menutupi tengah top bar** dan jam/menu tanggal **dipindah ke kanan** (seperti menu bar Mac dengan notch). Pilihan lain lewat setting: notch di bawah top bar. Lihat pertanyaan terbuka §9.
 
 ### Untuk pengguna umum
-- **Bahasa**: UI default Inggris, gettext domain `ponitch`, terjemahan Indonesia ikut dirilis.
+- **Bahasa**: UI default Inggris, gettext domain `ponitch@masahhmad` (= UUID: Cinnamon dan GUI Settings-nya mencari terjemahan xlet dengan nama itu), terjemahan Indonesia ikut dirilis.
 - **Sholat**: metode perhitungan bisa dipilih (Kemenag, MWL, ISNA, Mesir, Umm al-Qura, Karachi, JAKIM, MUIS, dll.) + mazhab Ashar + koreksi menit. API myquran hanya untuk lokasi Indonesia (§4.6). Tanpa lokasi default: saat pertama kali, notch meminta lokasi diatur.
 - **Distribusi**: GitHub release (zip per desktop), extensions.gnome.org, Cinnamon Spices.
 - **Matriks uji**: Mint 22.3 Cinnamon 6.6 (mesin ini), VM Ubuntu 24.04 (GNOME 46), VM Ubuntu 25.10 (GNOME 49).
@@ -195,7 +195,7 @@ ponitch/
 │   └── gnome/                 (MG)
 │       ├── extension.js  prefs.js  metadata.json  platform.js
 │       └── schemas/org.gnome.shell.extensions.ponitch.gschema.xml
-├── po/                        # terjemahan (M7)
+├── po/                        # ponitch.pot + id.po (M7)
 ├── bin/notchctl               # python3, stdlib saja
 ├── dist/                      # hasil build (tidak di-commit)
 └── tests/
@@ -209,7 +209,7 @@ ponitch/
 - **Tab** di-`import` saat pertama dibuka (lazy). Actor tab di-`destroy()` 30 s setelah notch ditutup.
 - **Config**: core hanya melihat objek `cfg` biasa + callback `applyConfig()`. Cinnamon mengisinya dari `settings-schema.json` (GUI otomatis), GNOME dari GSettings + `prefs.js`. Nama key sama di keduanya.
 - **Data**: `~/.local/share/ponitch/{todos.json, notifications.jsonl, pomodoro.json}`. Cache: `~/.cache/ponitch/{prayer-<id>-<yyyy-mm>.json, art/}`. Tulis atomik (`replace_contents`).
-- **IPC**: `$XDG_RUNTIME_DIR/ponitch.sock` (0600), satu baris JSON per request: `{"cmd":"toggle"}`, `{"cmd":"open","tab":"music"}`, `{"cmd":"tuck"}`.
+- **IPC**: `$XDG_RUNTIME_DIR/ponitch.sock` (0600), satu baris JSON per request: `{"cmd":"toggle"}`, `{"cmd":"open","tab":"music"}` (`notchctl open music`), `{"cmd":"tuck"}`.
 - **Shortcut**: default `<Alt>n`, didaftarkan adapter (§2A). `notchctl toggle` tetap ada untuk skrip.
 - **Autostart**: extension di-load otomatis oleh shell. Tidak perlu systemd.
 - **Privasi**: tanpa telemetri. Network hanya myquran (1×/bulan) dan cover art `http(s)` dari MPRIS. Sinkronisasi kalender ditangani EDS, bukan ponitch.
@@ -579,6 +579,29 @@ Perubahan dari urutan usulan:
 - Belum: **belum pernah dijalankan di GNOME**. Uji nested GNOME 46 setelah `sudo apt install gnome-shell`.
 
 **Uji nested GNOME 46 (2026-11-05):** jalan tanpa error JS. Terverifikasi: notch tampil di tengah top bar, jam pindah ke kanan, panel 7 tab (baterai UPower, sholat, kalender), musik (flash peek → bar EQ) dengan player uji, disable/enable bersih (socket hilang lalu kembali). Perbaikan: cover `file://` yang tidak ada tidak lagi membuat St mencoba memuat berulang. **Belum teruji di GNOME:** notifikasi dan jendela pengaturan (butuh paket `gjs`, yang tidak ikut terpasang di Mint), HUD (`ShowOSD` hanya boleh dari gnome-settings-daemon; mode unsafe tidak dipakai karena melemahkan keamanan), warna cover/aksen (berkas cover uji sempat hilang; dibuat ulang). Untuk lanjut: `sudo apt install gjs`, lalu jalankan ulang skrip nested.
+
+**Sesi GNOME 46 Wayland sungguhan (2026-11-05):** ponitch aktif tanpa error (state ENABLED, tidak ada `JS ERROR` di journal). Ditemukan: **daemon notifikasi GNOME mati di mesin ini** (`org.freedesktop.Notifications` tidak dimiliki siapa pun; journal: `Activated service 'org.gnome.Shell.Notifications' failed: Failed to execute program`) karena paket `gjs` tidak terpasang. Itu juga mematikan jendela pengaturan extension. Bukan bug ponitch; dicatat di README. Sisa DoD MG: setelah `sudo apt install gjs` lalu logout/login: uji notifikasi (`notify-send -A ok=OK`), jendela prefs, HUD lewat tombol volume/brightness fisik, klik tembus dan hover di Wayland, ukur delta RAM. GNOME 49 belum diuji (`shell-version` tetap "46").
+
+**Hasil MG** (2026-11-09, GNOME 46 nested di dalam Cinnamon X11, bus D-Bus dan `XDG_RUNTIME_DIR` terpisah sehingga socket ponitch Cinnamon tidak tersentuh; pointer digerakkan dengan XTest):
+- Enable tanpa error. Hover → peek, klik → panel, pointer keluar → tertutup; hover di samping notch tidak memicu apa pun; klik jam yang dipindah ke kanan membuka menu tanggal GNOME.
+- HUD: `ShowOSD` dipanggil dari pemilik nama `org.gnome.SettingsDaemon.MediaKeys` di bus nested (jalur yang sama dengan tombol volume) → bar 70% di notch, OSD bawaan tidak muncul.
+- Notifikasi (setelah `gjs` dipasang): `notify-send -A ok=Setuju` → banner ponitch, banner GNOME tidak tampil, hilang sendiri ~4 s, masuk tab Notifikasi; klik "Setuju" → `notify-send` mencetak `ok`.
+- Jendela prefs (`gnome-extensions prefs`) terbuka tanpa error, baris dibangkitkan dari skema.
+- RAM: RSS gnome-shell nested +5,9 MB dengan ponitch aktif dan panel pernah dibuka (203,4 vs 197,6 MB; satu start bersih per kondisi). Budget ≤ 15/25 MB terpenuhi.
+- Belum: sesi Wayland asli (input di nested lewat jendela X11), tombol fisik, GNOME 49. Mesin pengembang kini **Cinnamon saja**: 73 paket dari `apt install gnome-shell` (2026-11-05) + `gjs` dicopot, symlink extension GNOME dan key dconf ponitch untuk GNOME dihapus. Uji GNOME berikutnya butuh VM (§9).
+
+**Hasil M7 bagian i18n** (2026-11-05):
+- `src/core/i18n.js`: `_()` (dengan `%s` berurutan) dan `N_()` untuk konstanta tingkat modul yang diterjemahkan saat ditampilkan. Adapter memasang gettext-nya: GNOME `this.gettext` (locale di folder extension, `initTranslations` otomatis), Cinnamon `Gettext.dgettext(uuid)` dengan `bindtextdomain` ke `~/.local/share/locale`; `install.sh` me-link `.mo` ke sana, `uninstall.sh` mencabutnya. Skema GSettings diberi `gettext-domain` sehingga ringkasan setting di prefs ikut terjemahan.
+- `python3 build.py pot` mengekstrak 107 string dari core, `prefs.js`, skema GSettings dan `settings-schema.json` Cinnamon (sebagai teks biasa, bukan format: "3% of" bukan placeholder). `po/id.po` lengkap 107/107; build mengompilasi semua `po/*.po` ke `locale/` di kedua paket (`msgfmt --check`).
+- Tes: `tests/test_i18n.js`; `tests/test_build.py` memeriksa setiap `_('...')`/`N_('...')` ada di `.pot`, `msgcmp` tiap `.po`, dan `.mo` ada di kedua build.
+- Diuji di GNOME nested dengan `LANGUAGE=id`: tab Beranda, Kontrol, Pomodoro, Notifikasi tampil berbahasa Indonesia ("Sedang Diputar", "Subuh 03:42 · 3:56:35 lagi", "Tetap terjaga · Mati", "Sesi 1 · istirahat panjang tiap 4"). Nama bulan/hari tetap mengikuti locale sistem (GLib), tanggal Hijriah mengikuti `Intl`.
+- Ikut dikerjakan: `notchctl open <tab>` (tertulis di konvensi IPC, tetapi belum diimplementasi).
+- README ditulis ulang dalam bahasa Inggris.
+- Belum: terjemahan GUI Settings Cinnamon belum dilihat langsung (sesi sekarang GNOME); rilis GitHub (repo belum dibuat), submit ke extensions.gnome.org dan Cinnamon Spices (Spices meminta folder `po/` di dalam xlet; ditambahkan saat menyiapkan submit); uji instal bersih dari zip rilis di Mint & Ubuntu.
+
+**Stopwatch kerja** (permintaan user, 2026-11-14): tab sendiri dengan play/pause dan reset saja. `src/core/stopwatch.js` menyimpan `{running, startedAt, elapsed}` di `~/.local/share/ponitch/stopwatch.json`. Waktu dihitung menurut **jam dinding** (pilihan user): stopwatch yang berjalan tetap menghitung selama laptop mati atau suspend. Jam yang dimundurkan tidak membuat nilainya negatif. Service tidak punya timer sendiri; tab dan notch hanya berdetak selama terlihat. Live activity notch tertutup menghitung naik, dengan prioritas terendah (di bawah Pomodoro). Setting `stopwatch-enabled` (default nyala) ada di kedua skema. `tests/test_stopwatch.js`. Diuji di Cinnamon dengan klik sungguhan (XTest): play → 0:04 dan tersimpan; extension dimatikan 5 s lalu dinyalakan → 0:44 sesuai jam; pause → angka diam (berkas tetap 59 056 ms); reset → 0:00. Belum dilihat: tampilan di notch tertutup (Pomodoro user sedang berjalan dan memang didahulukan), mati/nyala sungguhan.
+
+**Pomodoro expand** (permintaan user, 2026-11-15): tombol expand (`view-fullscreen-symbolic`) di tab Pomodoro menutup monitor utama dengan lapisan hitam (seperti F11), dan countdown ditaruh di tengah dengan font-size 50% tinggi monitor (dikecilkan bila teks tidak muat 90% lebarnya). Glyph dipusatkan menurut ukuran tinta Pango, bukan kotak baris. Lapisan itu chrome yang reaktif, jadi klik tidak tembus ke jendela di belakangnya; ia ikut tersembunyi saat ada jendela fullscreen. Notch tetap di atasnya: dalam keadaan tertutup ia menampilkan fase + countdown + tombol restore (`view-restore-symbolic`), dan hover tidak memicu peek supaya tombol itu tidak bergeser. Ikon di tab ikut berganti. Lapisan dibuang bila Pomodoro dimatikan atau extension di-disable. Diuji di Cinnamon (monitor utama 1920×1080 di samping 1920×1200) dengan klik XTest: pusat tinta angka tepat (2880, 540), tinggi angka 384 px (font 540 px); restore dari notch 3/3 dan dari tab bekerja; CPU Cinnamon 6,3% saat terbuka (baseline sesi ~8%). Satu klik restore pertama sempat membuka panel alih-alih menutup lapisan, dan tidak bisa direproduksi dalam 4 percobaan berikutnya. Belum diuji: Esc (sengaja tidak ada), HiDPI, GNOME (sudah dicopot).
 
 ---
 

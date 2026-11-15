@@ -1,4 +1,5 @@
 // Which live activity the closed notch shows (PLAN.md §5). Pure JS so node can test the order.
+const { _, N_ } = require('./i18n');
 const SOON_MS = 15 * 60 * 1000;
 const PRAYER_NOW_MS = 5 * 60 * 1000;
 const TODO_OVERDUE_MS = 15 * 60 * 1000;
@@ -8,11 +9,12 @@ const TODO_OVERDUE_MS = 15 * 60 * 1000;
 //   prayer: { next: { name, at }, current: { name, at } | null } | null,
 //   pomodoro: { label, running, endsAt } | null,
 //   todo: { title, due } | null   (nearest undone todo with a due time)
+//   stopwatch: { running, since } | null
 //   playing: bool                 (music)
 // }
-// Returns { key, icon, text, until? (ms, countdown to), tint } or null (music/dot decided by the notch).
+// Returns { key, icon, text, until? (ms, countdown to) | since? (ms, count up from), tint } or null (music/dot decided by the notch).
 function pickActivity(s) {
-    const { now, prayer, pomodoro, todo } = s;
+    const { now, prayer, pomodoro, todo, stopwatch } = s;
     if (prayer && prayer.current && now - prayer.current.at < PRAYER_NOW_MS)
         return { key: `prayer-now-${prayer.current.at}`, icon: 'prayer', text: prayer.current.name, tint: 'green', label: 'now' };
     if (todo && todo.due - now < SOON_MS && now - todo.due < TODO_OVERDUE_MS)
@@ -21,6 +23,8 @@ function pickActivity(s) {
         return { key: `prayer-soon-${prayer.next.at}`, icon: 'prayer', text: prayer.next.name, until: prayer.next.at, tint: 'teal' };
     if (pomodoro && pomodoro.running)
         return { key: `pomo-${pomodoro.label}-${pomodoro.endsAt}`, icon: 'timer', text: pomodoro.label, until: pomodoro.endsAt, tint: 'orange' };
+    if (stopwatch && stopwatch.running)
+        return { key: `stopwatch-${stopwatch.since}`, icon: 'stopwatch', text: _('Stopwatch'), since: stopwatch.since, tint: 'green' };
     return null;
 }
 
@@ -34,9 +38,9 @@ function countdown(until, now) {
 
 // What the notch says when a pomodoro session runs out, by the phase that starts now.
 const POMODORO_ALERTS = {
-    short: { title: 'Take a break!', tint: 'green' },
-    long: { title: 'Take a long break!', tint: 'green' },
-    focus: { title: 'Time to focus!', tint: 'orange' },
+    short: { title: N_('Take a break!'), tint: 'green' },
+    long: { title: N_('Take a long break!'), tint: 'green' },
+    focus: { title: N_('Time to focus!'), tint: 'orange' },
 };
 
 module.exports = { pickActivity, countdown, POMODORO_ALERTS };
