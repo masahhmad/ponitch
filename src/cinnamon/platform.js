@@ -114,6 +114,14 @@ var platform = {
 
     // Keyboard focus for a text entry inside shell chrome. Returns a release function.
     // Cinnamon's pushModal also pops itself if the actor is destroyed.
+    // Global shortcut held only until the returned function is called (e.g. Esc while the
+    // pomodoro is expanded). Unlike grabKeyboard it leaves every other key and the pointer alone.
+    grabKey(accel, cb) {
+        const name = `ponitch-key-${accel}`;
+        Main.keybindingManager.addHotKey(name, accel, () => cb());
+        return () => Main.keybindingManager.removeHotKey(name);
+    },
+
     grabKeyboard(actor) {
         if (!Main.pushModal(actor))
             return () => {};

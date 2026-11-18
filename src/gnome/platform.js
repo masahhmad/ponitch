@@ -9,6 +9,8 @@ import GObject from 'gi://GObject';
 import GdkPixbuf from 'gi://GdkPixbuf';
 import NM from 'gi://NM';
 import Gvc from 'gi://Gvc';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 
@@ -209,6 +211,25 @@ export const platform = {
 
     // Keyboard focus for a text entry inside shell chrome. Returns a release function.
     // GNOME's pushModal also pops itself if the actor is destroyed.
+    // Global shortcut held only until the returned function is called (e.g. Esc while the
+    // pomodoro is expanded). Unlike grabKeyboard it leaves every other key and the pointer alone.
+    grabKey(accel, cb) {
+        const action = global.display.grab_accelerator(accel, Meta.KeyBindingFlags.NONE);
+        if (action === Meta.KeyBindingAction.NONE)
+            return () => {};
+        const name = Meta.external_binding_name_for_action(action);
+        Main.wm.allowKeybinding(name, Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
+        const id = global.display.connect('accelerator-activated', (_d, a) => {
+            if (a === action)
+                cb();
+        });
+        return () => {
+            global.display.disconnect(id);
+            global.display.ungrab_accelerator(action);
+            Main.wm.allowKeybinding(name, Shell.ActionMode.NONE);
+        };
+    },
+
     grabKeyboard(actor) {
         const grab = Main.pushModal(actor);
         if ((grab.get_seat_state() & Clutter.GrabState.KEYBOARD) === 0) {

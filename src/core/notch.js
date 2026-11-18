@@ -160,7 +160,7 @@ var Notch = class Notch {
     }
 
     // Pomodoro fills the primary monitor; the notch stays above it and, closed, shows the
-    // countdown with a restore button. The same button (or the one in the Pomodoro tab) shrinks it.
+    // countdown with a restore button. The same button, the one in the Pomodoro tab, or Esc shrinks it.
     togglePomodoroExpanded() {
         const pomo = this._features && this._features.pomodoro;
         if (this._focus) {
@@ -173,6 +173,7 @@ var Notch = class Notch {
             if (parent && parent === this._focus.actor.get_parent())
                 parent.set_child_above_sibling(this.actor, null);
             this._relayout();
+            this._releaseEsc = this._platform.grabKey('Escape', () => this.togglePomodoroExpanded());
             this.state = 'closed'; // out of the way of the countdown (pinned or not)
         }
         this._shownKind = null;
@@ -182,6 +183,7 @@ var Notch = class Notch {
     _removeFocus() {
         if (!this._focus)
             return;
+        this._releaseEsc();
         this._platform.removeChrome(this._focus.actor);
         this._focus.actor.destroy();
         this._focus = null;
