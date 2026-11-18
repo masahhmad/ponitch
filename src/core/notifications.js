@@ -8,6 +8,19 @@ const LIVE_MAX = 50;
 const HISTORY_MAX = 500;
 const BODY_MAX = 500;
 
+// Chromium-based browsers (WhatsApp Web, etc.) XML-escape the title they send ("Ya&apos;kub"),
+// but the spec makes the title plain text, so the desktop shows the entity as typed. Decode
+// once: named XML entities, &nbsp; and numeric references; anything else is left as written.
+const NAMED = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: '\u00a0' };
+function decodeEntities(s) {
+    return s.replace(/&(#x[0-9a-f]+|#[0-9]+|[a-z]+);/gi, (m, e) => {
+        if (e[0] !== '#')
+            return NAMED[e.toLowerCase()] !== undefined ? NAMED[e.toLowerCase()] : m;
+        const code = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+        return code > 0 && code <= 0x10ffff && !(code >= 0xd800 && code <= 0xdfff) ? String.fromCodePoint(code) : m;
+    });
+}
+
 var NotificationService = class NotificationService extends Emitter {
     // cfg: { history: bool }
     constructor(platform, cfg) {
@@ -33,6 +46,7 @@ var NotificationService = class NotificationService extends Emitter {
 
     // New or updated notification. Returns the live item.
     receive(info) {
+        info = { ...info, title: decodeEntities(info.title || '') };
         let item = this.items.find(i => i.key === info.key);
         if (item) {
             Object.assign(item, info, { time: Date.now() }); // e.g. a progress notification updating
@@ -74,4 +88,4 @@ var NotificationService = class NotificationService extends Emitter {
     }
 };
 
-module.exports = { NotificationService };
+module.exports = { NotificationService, decodeEntities };

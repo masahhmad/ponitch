@@ -1,5 +1,5 @@
 // Cinnamon side of the platform interface used by core (PLAN.md §2A).
-const { Clutter, St, GLib, Gio, GObject, GdkPixbuf, NM, Cvc } = imports.gi;
+const { Clutter, St, GLib, Gio, GObject, GdkPixbuf, NM, Cvc, Pango } = imports.gi;
 
 const POWER = ['org.cinnamon.SettingsDaemon.Power', '/org/cinnamon/SettingsDaemon/Power', 'org.cinnamon.SettingsDaemon.Power.Screen'];
 const NOTIF_SCHEMA = 'org.cinnamon.desktop.notifications';
@@ -143,6 +143,15 @@ var platform = {
         }
         const keys = new WeakMap();
         let nextKey = 1;
+        // Cinnamon keeps the title as Pango markup (it shows it with set_markup), e.g. a browser's
+        // "Ya&apos;kub"; ponitch shows plain text, so decode it the same way Cinnamon does.
+        const plain = markup => {
+            try {
+                return Pango.parse_markup(markup, -1, '')[2];
+            } catch (e) {
+                return markup;
+            }
+        };
         const toInfo = n => {
             if (!keys.has(n))
                 keys.set(n, nextKey++);
@@ -154,7 +163,7 @@ var platform = {
             return {
                 key: keys.get(n),
                 app: (n.source && n.source.title) || '',
-                title: n.title || '',
+                title: plain(n.title || ''),
                 body: n._bodyUrlHighlighter ? n._bodyUrlHighlighter.actor.clutter_text.get_text() : '',
                 gicon: icon && (icon.gicon || (icon.icon_name ? Gio.ThemedIcon.new(icon.icon_name) : null)) || null,
                 urgency: n.urgency >= MessageTray.Urgency.CRITICAL ? 'critical' : n.urgency <= MessageTray.Urgency.LOW ? 'low' : 'normal',
